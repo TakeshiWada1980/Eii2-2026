@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=yes"
+    />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta name="referrer" content="no-referrer" />
+
+    <script>
+      MathJax = {
+        chtml: {
+          displayAlign: "left",
+          displayIndent: "1em",
+        },
+      };
+    </script>
+
+    
+
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <title></title>
+  </head>
+
+  <body>
+    <div class="openbtn"><span></span><span></span><span></span></div>
+    <nav id="g-nav">
+      <div id="g-nav-list">
+        <!-- ---------------------------------------- -->
+        
+        <!-- ---------------------------------------- -->
+      </div>
+    </nav>
+
+    <header class="markdown-body">
+      <p></p>
+      <p></p>
+    </header>
+
+    <main class="markdown-body">
+      <!-- ---------------------------------------- -->
+      <p>/* ——- Programming1-2026 ——- */ html { font-family: “M PLUS Rounded 1c”, -apple-system,
+      BlinkMacSystemFont, “Segoe UI”, Helvetica, Arial, sans-serif, “Apple Color Emoji”, “Segoe UI
+      Emoji”, “Segoe UI Symbol”;</p>
+      <p>/* — 本文 — */ –main-foreground: #24292e; –main-background: #ebebeb; –main-theme-color:
+      #0366d6; –main-theme-lt-color: #47a4f5;</p>
+      <p>/* — プログラムコード — <em>/ –code-pg-foreground: #24292e; /</em>
+      インラインcode・ハイライトブロック 文字色 <em>/ –code-pg-background: #ebebeb; /</em>
+      インラインcode・ハイライトブロック 背景色 <em>/ –code-quote-background: #f6f8fa; /</em>
+      引用内インラインcode 背景色 <em>/ –code-ln-foreground: #a8a8a8; /</em> 行番号 <em>/
+      –code-out-foreground: #ebebeb; /</em> 出力ブロック 文字色 <em>/ –code-out-background: #012456;
+      /</em> 出力ブロック 背景色 */</p>
+      <p>/* — マスク（フリップ） — <em>/ –main-masked-foreground: #888888; /</em> アイコン色（閉時）
+      <em>/ –main-masked-background: #ebebeb; /</em> 枠線色（開時） <em>/ –main-masked-bordercolor:
+      #fff57c; /</em> ピル背景・枠線色（閉時） */ }</p>
+      <p>/* ——- 共通 ——- */</p>
+      <p>.markdown-body { -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color:
+      var(–main-foreground); line-height: 1.5; word-wrap: break-word; box-sizing: border-box;
+      min-width: 200px; max-width: 980px; margin: 0 auto; padding: 0 45px; }</p>
+      <p>mjx-container { font-size: 100% !important; }</p>
+      <p><span class="citation" data-cites="media">@media</span> (max-width: 767px) { .markdown-body
+      { padding-left: 15px; padding-right: 15px; } mjx-container { font-size: 85% !important; }
+      }</p>
+      <p>main.markdown-body p { margin-block-start: 0.7em; margin-block-end: 0.7em; text-indent:
+      0.7em; }</p>
+      <p>/* ——- ヘッダーとフッター ——- */ header.markdown-body p { text-align: right; line-height:
+      1; margin-block-start: 0.3em; margin-block-end: 0.3em; }</p>
+      <p>footer.markdown-body p { text-align: right; }</p>
+      <p>/* ——- 水平線 ——- */ .markdown-body hr { margin: 1.5em 0em; }</p>
+      <p>/* ——- 強調 ——- */</p>
+      <p>.markdown-body strong { color: var(–main-theme-color); }</p>
+      <p>.markdown-body em { font-style: normal; font-weight: normal; padding: 0 0.4em; color:
+      var(–main-background); border-radius: 5px; border-bottom: 0; background-color:
+      var(–main-theme-color); }</p>
+      <p>.markdown-body u { text-decoration: none; background: linear-gradient(transparent 70%,
+      rgba(184, 227, 255, 0.7) 30%); }</p>
+      <p>/* ——- 見出し ——- */</p>
+      <p>.markdown-body h1 { position: relative; padding: 0 0 0 1.6em; border-bottom: 2px solid;
+      color: var(–main-theme-color); }</p>
+      <p>.markdown-body h1::before { position: absolute; left: 0; font-family: “Font Awesome 7
+      Free”; content: “1b”; color: var(–main-theme-color); }</p>
+      <p>.markdown-body h2 { border-bottom: 2px solid; }</p>
+      <p>.markdown-body h3 { border-bottom: 2px solid; padding-left: 0.25em; font-size: 1.3em; }</p>
+      <p>.markdown-body h3 span { display: none; }</p>
+      <p>h1 .header-section-number, h2 .header-section-number { padding-right: 0.5em; }</p>
+      <p>/* ——- 表 ——- */</p>
+      <p>.markdown-body table { border-collapse: collapse; border: 1.5px solid #312e81; margin:
+      0.7em 0.5em; }</p>
+      <p>.markdown-body table th, .markdown-body table td { background-color: #ffffff; border: 1px
+      solid #312e81; padding: 0em 0.5em; }</p>
+      <p>.markdown-body table th { color: #1e40af; background-color: #eef2ff; border-bottom: 1.5px
+      solid #312e81; padding: 0.25em 0.5em; }</p>
+      <p>/* ——- 図 ——- */</p>
+      <p>.markdown-body figure { text-align: center; margin-inline-start: 0; margin-inline-end: 0;
+      }</p>
+      <p>.markdown-body figcaption { display: none; }</p>
+      <p>.markdown-body figure img { max-width: 100%; height: auto; }</p>
+      <p>/* ——- リンク ——- */</p>
+      <p>.markdown-body a { font-weight: bold; text-decoration: none; color: var(–main-theme-color);
+      margin: 0; cursor: pointer; border-bottom: 1.5px dashed; transition: background-color 0.5s;
+      }</p>
+      <p>.markdown-body a:hover { color: var(–main-theme-lt-color); }</p>
+      <p>/* ——- Awesome icon ——- */</p>
+      <p>.markdown-body i[class^=“fa-”] { margin-left: -0.1em; margin-right: 0.5em; }</p>
+      <p>.markdown-body i.fa-flip-horizontal { margin-left: 0.55em; margin-right: -0.1em; }</p>
+      <p>.markdown-body p i[class^=“fa-”] { margin-left: -0.4em; margin-right: 0.6em; }</p>
+      <p>.markdown-body p i.fa-flip-horizontal { margin-left: 0.7em; margin-right: -0.4em; }</p>
+      <p>/* ——- 引用 ——- */</p>
+      <p>.markdown-body blockquote { margin-left: 1em; margin-right: 1em; padding: 0 0 0 1em; color:
+      #6a737d; border-left: 0.25em solid #dfe2e5; margin-block-start: 0.7em; margin-block-end:
+      0.7em; }</p>
+      <p>.markdown-body blockquote p { text-indent: 0; }</p>
+      <p>.markdown-body blockquote u { background: none; border-bottom: 2px solid; border-color:
+      #d9d9d9; }</p>
+      <p>.markdown-body blockquote &gt; :last-child { margin-bottom: 0; } .markdown-body blockquote
+      &gt; :first-child { margin-top: 0; }</p>
+      <p>/* ——- プログラムコード ——- */</p>
+      <p>div.sourceCode { position: relative; overflow-x: auto; background-color:
+      var(–code-pg-background); border-radius: 10px; margin-block-start: 0.7em; margin-block-end:
+      0.7em; counter-reset: pg-line; }</p>
+      <p>div.sourceCode[data-caption]::before { font-family: “JetBrains Mono”, “SFMono-Regular”,
+      Consolas, “Liberation Mono”, Menlo, Courier, monospace; display: block; padding-left: 20px;
+      background: var(–code-pg-foreground); color: var(–code-pg-background); content:
+      attr(data-caption); }</p>
+      <p>/* ——- プログラムコード::行番号 ——- */</p>
+      <p>.markdown-body code &gt; span &gt; a { margin-left: 0; margin-right: 5px; }</p>
+      <p>.numberLines code &gt; span &gt; a { color: var(–code-ln-foreground); margin-left: 0;
+      margin-right: 10px; font-weight: normal; border: none; cursor: auto; }</p>
+      <p>.numberLines code &gt; span &gt; a::before { counter-increment: pg-line; content:
+      counter(pg-line, decimal-leading-zero); }</p>
+      <p><span class="citation" data-cites="media">@media</span> (max-width: 767px) { .markdown-body
+      code &gt; span &gt; a { display: none; } }</p>
+      <p>/* ——- プログラムコード::本体 ——- */</p>
+      <p>.markdown-body pre { background: var(–code-out-background); padding-top: 10px;
+      padding-bottom: 10px; padding-left: 12px; padding-right: 16px; margin: 0; overflow: auto;
+      line-height: 1.2; word-wrap: normal; border-radius: 10px; }</p>
+      <p>.markdown-body pre.sourceCode { background-color: transparent; border-radius: 0; }</p>
+      <p>main.markdown-body &gt; pre { margin-block-start: 0.7em; margin-block-end: 0.7em; }</p>
+      <p>div.note &gt; pre { margin-block-start: 0.7em; margin-block-end: 0.7em; }</p>
+      <p>/* ——- プログラムコード::文字 ——- */</p>
+      <p>.markdown-body code { font-weight: normal; font-family: “JetBrains Mono”, “SFMono-Regular”,
+      Consolas, “Liberation Mono”, Menlo, Courier, monospace; font-variant-ligatures: none; padding:
+      0.15em 0.4em; font-size: 100%; word-break: normal; color: var(–code-pg-foreground);
+      background-color: var(–code-pg-background); border-radius: 5px; white-space: pre-wrap;
+      overflow-wrap: break-word; }</p>
+      <p>.markdown-body blockquote code { background-color: var(–code-quote-background); }</p>
+      <p>.markdown-body pre code { color: var(–code-pg-background); background: transparent;
+      padding: 0; border-radius: 0; }</p>
+      <p>.markdown-body pre.sourceCode code { color: var(–code-pg-foreground); }</p>
+      <p>/* ——- マスク ——- */</p>
+      <p>.markdown-body span.masked { font-weight: bold; color: transparent; background-color:
+      var(–main-masked-bordercolor); padding: 0.05em 0.5em 0.05em 0.3em; border-radius: 8px; border:
+      solid 2px var(–main-masked-bordercolor); cursor: pointer; }</p>
+      <p>.markdown-body span.masked::before { font-family: “Font Awesome 7 Free”; content: “8e”;
+      margin-right: 0.4em; color: var(–main-masked-foreground); }</p>
+      <p>.markdown-body span.masked.open { color: var(–main-theme-color); background-color:
+      transparent; border: solid 2px var(–main-masked-background); }</p>
+      <p>.markdown-body span.masked.open::before { color: #bbbbbb; background-color: transparent;
+      }</p>
+      <p>.markdown-body .masked code { color: transparent; background-color: transparent; padding:
+      0.05em 0.4em; }</p>
+      <p>.markdown-body .masked.open code { color: var(–code-pg-foreground); }</p>
+      <p>/* ——- 番号付き箇条書き ——- */</p>
+      <p>.markdown-body ol li::marker { color: var(–main-theme-color); font-weight: bold; }</p>
+      <p>.markdown-body ol li { position: relative; padding: 0.35em 0 0 0; margin: 0; text-indent:
+      0.3em; }</p>
+      <p>/* ——- 箇条書き ——- */</p>
+      <p>.markdown-body ul { list-style: none; padding: 0; margin: 0 0 0.7em 0; }</p>
+      <p>.markdown-body li &gt; ul { margin: 0 0 0.7em -0.5em; padding: 0; }</p>
+      <p>.markdown-body li &gt; ol { margin: 0 0 0.7em 0; padding-left: 1.5em; }</p>
+      <p>/* ol &gt; li 内の ul &gt; li：記号と本文の距離を専用調整 */ .markdown-body ol &gt; li &gt;
+      ul &gt; li { text-indent: 0; padding-left: 1.4em; }</p>
+      <p>.markdown-body ol &gt; li &gt; ul &gt; li::before { left: 0; width: 1em; text-align:
+      center; }</p>
+      <p>.markdown-body ul p { margin-block-start: 0.2em; margin-block-end: 0.2em; }</p>
+      <p>/* ul の直接の子 li のみに適用（子孫セレクタによる ol &gt; li への漏れを防ぐ） */
+      .markdown-body ul &gt; li { position: relative; padding: 0.35em 0 0 1.3em; margin: 0;
+      text-indent: 0.5em; }</p>
+      <p>.markdown-body ul &gt; li::before { position: absolute; left: 0.1em; font-family: “Font
+      Awesome 7 Free”; font-weight: 900; content: “da”; color: var(–main-theme-lt-color); }</p>
+      <p>.markdown-body ul &gt; li &gt; ul &gt; li::before { padding-top: 3px; font-size: 85%; }</p>
+      <p>/* ——- 吹き出し ——- */</p>
+      <p>.markdown-body div.balloon { –balloon-border-color: #5b98ff; –balloon-accent-color:
+      #d9e7ff; –balloon-shadow-color: rgba(91, 152, 255, 0.12); display: grid;
+      grid-template-columns: minmax(96px, 128px) minmax(0, 1fr); gap: 0; align-items: start; margin:
+      1.2em 0 1.4em; }</p>
+      <p>.markdown-body div.balloon.balloon-no-avatar { grid-template-columns: minmax(0, 1fr); }</p>
+      <p>.markdown-body .balloon-figure { align-self: start; width: min(100%, 128px); }</p>
+      <p>.markdown-body .balloon-avatar { width: 100%; overflow: hidden; /* border: 2px solid
+      var(–balloon-border-color); <em>/ border-radius: 20px; /</em> background:
+      linear-gradient(180deg, #ffffff 0%, #f8fbff 100%); box-shadow: 0 10px 24px
+      var(–balloon-shadow-color); */ }</p>
+      <p>.markdown-body .balloon-avatar img { display: block; width: 100%; height: auto; }</p>
+      <p>.markdown-body .balloon-body { –balloon-stroke-width: 2px; –balloon-radius: 12px;
+      –balloon-tail-width: 20px; –balloon-tail-top: 18px; –balloon-tail-base: 20px;
+      –balloon-tail-tip-inset: 3px; position: relative; min-width: 0; width: 97%; max-width: none;
+      padding-left: var(–balloon-tail-width); padding-top: 0; }</p>
+      <p><span class="citation" data-cites="media">@media</span> (max-width: 767px) { .markdown-body
+      .balloon-body { width: 92%; } }</p>
+      <p>.markdown-body .balloon-frame { position: absolute; inset: 0; width: 100%; height: 100%;
+      overflow: visible; pointer-events: none; /* filter: drop-shadow(0 10px 24px
+      var(–balloon-shadow-color)); */ z-index: 0; }</p>
+      <p>.markdown-body .balloon-frame-shape { fill: #ffffff; stroke: var(–balloon-border-color);
+      stroke-width: var(–balloon-stroke-width); stroke-linecap: round; stroke-linejoin: round;
+      vector-effect: non-scaling-stroke; shape-rendering: geometricPrecision; }</p>
+      <p>.markdown-body .balloon-bubble { position: relative; min-height: 68px; z-index: 1; }</p>
+      <p>.markdown-body .balloon-no-avatar .balloon-body { padding-left: 0; }</p>
+      <p>.markdown-body .balloon-no-avatar .balloon-frame { display: none; }</p>
+      <p>.markdown-body .balloon-content { padding: 0.85em 1.15em; }</p>
+      <p>.markdown-body .balloon-content &gt; :first-child { margin-top: 0; }</p>
+      <p>.markdown-body .balloon-content &gt; :last-child { margin-bottom: 0; }</p>
+      <p>.markdown-body .balloon-content p { margin-block-start: 0.45em; margin-block-end: 0.45em;
+      text-indent: 0; }</p>
+      <p>.markdown-body .balloon-content ul, .markdown-body .balloon-content ol { margin-bottom: 0;
+      }</p>
+      <p>.markdown-body div.balloon.tone-blue { –balloon-border-color: #5b98ff;
+      –balloon-accent-color: #d9e7ff; –balloon-shadow-color: rgba(91, 152, 255, 0.12); }</p>
+      <p>.markdown-body div.balloon.tone-green { –balloon-border-color: #3ca978;
+      –balloon-accent-color: #daf4e8; –balloon-shadow-color: rgba(60, 169, 120, 0.12); }</p>
+      <p>.markdown-body div.balloon.tone-orange { –balloon-border-color: #ee8b41;
+      –balloon-accent-color: #ffe8d4; –balloon-shadow-color: rgba(238, 139, 65, 0.14); }</p>
+      <p>.markdown-body div.balloon.tone-yellow { –balloon-border-color: #facc15;
+      –balloon-accent-color: #fef3c7; –balloon-shadow-color: rgba(250, 204, 21, 0.14); }</p>
+      <p>.markdown-body div.balloon.tone-pink { –balloon-border-color: #e071a5;
+      –balloon-accent-color: #ffe1ee; –balloon-shadow-color: rgba(224, 113, 165, 0.14); }</p>
+      <p>.markdown-body div.balloon.tone-gray { –balloon-border-color: #8895a7;
+      –balloon-accent-color: #ecf0f5; –balloon-shadow-color: rgba(136, 149, 167, 0.14); }</p>
+      <p><span class="citation" data-cites="media">@media</span> (max-width: 767px) { .markdown-body
+      div.balloon { grid-template-columns: minmax(72px, 96px) minmax(0, 1fr); gap: 8px; }</p>
+      <p>.markdown-body .balloon-figure { width: min(100%, 96px); }</p>
+      <p>.markdown-body .balloon-avatar { border-radius: 11px; }</p>
+      <p>.markdown-body .balloon-body { –balloon-radius: 15px; –balloon-tail-width: 22px;
+      –balloon-tail-top: 16px; –balloon-tail-base: 18px; –balloon-tail-tip-inset: 2px; max-width:
+      100%; padding-top: 0; }</p>
+      <p>.markdown-body .balloon-bubble { min-height: 60px; }</p>
+      <p>.markdown-body .balloon-content { padding: 0.75em 0.95em; } }</p>
+      <p>/* ——- ノート共通 ——- */</p>
+      <p>.markdown-body div.note { border-radius: 10px; padding: 0 15px; margin: 0.9em 0; }</p>
+      <p>.note p:first-child::before { font-family: “Font Awesome 7 Free”; font-weight: 900;
+      margin-right: 0.5em; }</p>
+      <p>.note p:first-child { text-indent: 0; }</p>
+      <p>/* ——- ノート: type-caution（注意事項）——- <em>/ /</em> * Tailwind rose カラー
+      https://tailwindcss.com/docs/colors * エリア背景 rose-100 #ffe4e6 * 枠線 rose-300 #fda4af * em
+      背景 rose-400 #fb7185 * アクセント rose-600 #e11d48 ← アイコン・strong・link・マスクアイコン *
+      link hover rose-700 #be123c * code 背景 rose-200 #fecdd3 / code 文字 rose-700 #be123c */</p>
+      <p>/* エリア <em>/ .markdown-body div.type-caution { border: 2px solid #fda4af; /</em>
+      rose-300 <em>/ background: #ffe4e6; /</em> rose-100 */ }</p>
+      <p>/* アイコン（段落先頭） <em>/ .type-caution p:first-child::before { content: “71”; color:
+      #e11d48; /</em> rose-600 */ }</p>
+      <p>/* 強調文字 <strong>text</strong> <em>/ .type-caution strong { color: #e11d48; /</em>
+      rose-600 */ }</p>
+      <p>/* 大強調文字 <strong><em>text</em></strong>（em のピル背景） yellow
+      と異なりピル背景が濃いため、ピル内テキストは白で統一 <em>/ .type-caution em {
+      background-color: #fb7185; } /</em> rose-400 */ .type-caution em strong, .type-caution strong
+      em { color: #ffffff; }</p>
+      <p>/* インラインcode <em>/ .type-caution code { background: #fecdd3; /</em> rose-200 <em>/
+      color: #be123c; /</em> rose-700 */ }</p>
+      <p>/* リンク <em>/ .type-caution a { color: #e11d48; } /</em> rose-600 <em>/ .type-caution
+      a:hover { color: #be123c; } /</em> rose-700 */</p>
+      <p>/* マスク（閉）: ピル背景・枠線・アイコン <em>/ .type-caution span.masked {
+      background-color: #fda4af; /</em> rose-300 <em>/ border-color: #fda4af; /</em> rose-300 <em>/
+      } .type-caution span.masked::before { color: #e11d48; } /</em> rose-600 */</p>
+      <p>/* マスク（開）: 文字色・枠線・アイコン <em>/ .type-caution span.masked.open { color:
+      #e11d48; border-color: #fecdd3; } /</em> rose-600 / rose-200 <em>/ .type-caution
+      span.masked.open::before { color: #fda4af; } /</em> rose-300 */</p>
+      <p>/* blockquote 左ボーダー <em>/ .type-caution blockquote { border-left-color: #fda4af; }
+      /</em> rose-300 */</p>
+      <p>/* u（下線）: 通常は gradient ハイライト、blockquote 内は border-bottom <em>/ .type-caution
+      u { background: linear-gradient(transparent 72%, #fecdd3 28%); } /</em> rose-200 <em>/
+      .type-caution blockquote u { border-color: #fda4af; } /</em> rose-300 */</p>
+      <p>/* ——- ノート: type-tips（補足・ヒント）——- <em>/ /</em> * Tailwind yellow カラー
+      https://tailwindcss.com/docs/colors * エリア背景 yellow-100 #fef9c3 * 枠線 yellow-400 #facc15
+      * em 背景 yellow-400 #facc15 / em 文字 yellow-900 #713f12 * アクセント yellow-700 #a16207 ←
+      アイコン・strong・link・マスクアイコン * link hover yellow-800 #854d0e * code 背景 yellow-200
+      #fef08a / code 文字 yellow-800 #854d0e * ※ yellow 系はピル背景が淡いため、em
+      内テキストは白ではなく yellow-900 を使用 */</p>
+      <p>/* エリア <em>/ .markdown-body div.type-tips { border: 2px solid #facc15; /</em> yellow-400
+      <em>/ background: #fef9c3; /</em> yellow-100 */ }</p>
+      <p>/* アイコン <em>/ .type-tips p:first-child::before { content: “ad”; color: #a16207; /</em>
+      yellow-700 */ }</p>
+      <p>/* 強調文字 <em>/ .type-tips strong { color: #a16207; /</em> yellow-700 */ }</p>
+      <p>/* 大強調文字（yellow ピルは白文字だとコントラスト不足のため yellow-900 を使用） <em>/
+      .type-tips em { background-color: #facc15; color: #713f12; } /</em> yellow-400 / yellow-900
+      <em>/ .type-tips em strong, .type-tips strong em { color: #713f12; } /</em> yellow-900 */</p>
+      <p>/* インラインcode <em>/ .type-tips code { background: #fef08a; /</em> yellow-200 <em>/
+      color: #854d0e; /</em> yellow-800 */ }</p>
+      <p>/* リンク <em>/ .type-tips a { color: #a16207; } /</em> yellow-700 <em>/ .type-tips a:hover
+      { color: #854d0e; } /</em> yellow-800 */</p>
+      <p>/* マスク（閉） <em>/ .type-tips span.masked { background-color: #fde047; /</em> yellow-300
+      <em>/ border-color: #fde047; /</em> yellow-300 <em>/ } .type-tips span.masked::before { color:
+      #a16207; } /</em> yellow-700 */</p>
+      <p>/* マスク（開） <em>/ .type-tips span.masked.open { color: #a16207; border-color: #fef08a;
+      } /</em> yellow-700 / yellow-200 <em>/ .type-tips span.masked.open::before { color: #fde047; }
+      /</em> yellow-300 */</p>
+      <p>/* blockquote 左ボーダー <em>/ .type-tips blockquote { border-left-color: #facc15; } /</em>
+      yellow-400 */</p>
+      <p>/* u（下線） <em>/ .type-tips u { background: linear-gradient(transparent 72%, #fef08a
+      28%); } /</em> yellow-200 <em>/ .type-tips blockquote u { border-color: #facc15; } /</em>
+      yellow-400 */</p>
+      <p>/* リスト記号 <em>/ .type-tips ul li::before { color: #a16207; } /</em> yellow-700 */</p>
+      <p>/* ——- ノート: type-senior（上級者向け）——- <em>/ /</em> * Tailwind purple カラー
+      https://tailwindcss.com/docs/colors * エリア背景 purple-100 #f3e8ff * 枠線 purple-300 #d8b4fe
+      * em 背景 purple-400 #c084fc * アクセント purple-600 #9333ea ←
+      アイコン・strong・link・マスクアイコン * link hover purple-700 #7e22ce * code 背景 purple-200
+      #e9d5ff / code 文字 purple-700 #7e22ce */</p>
+      <p>/* エリア <em>/ .markdown-body div.type-senior { border: 2px solid #d8b4fe; /</em>
+      purple-300 <em>/ background: #f3e8ff; /</em> purple-100 */ }</p>
+      <p>/* アイコン <em>/ .type-senior p:first-child::before { content: “e2”; color: #9333ea;
+      /</em> purple-600 */ }</p>
+      <p>/* 強調文字 <em>/ .type-senior strong { color: #9333ea; /</em> purple-600 */ }</p>
+      <p>/* 大強調文字 <em>/ .type-senior em { background-color: #c084fc; } /</em> purple-400 */
+      .type-senior em strong, .type-senior strong em { color: #ffffff; }</p>
+      <p>/* インラインcode <em>/ .type-senior code { background: #e9d5ff; /</em> purple-200 <em>/
+      color: #7e22ce; /</em> purple-700 */ }</p>
+      <p>/* リンク <em>/ .type-senior a { color: #9333ea; } /</em> purple-600 <em>/ .type-senior
+      a:hover { color: #7e22ce; } /</em> purple-700 */</p>
+      <p>/* マスク（閉） <em>/ .type-senior span.masked { background-color: #d8b4fe; /</em>
+      purple-300 <em>/ border-color: #d8b4fe; /</em> purple-300 <em>/ } .type-senior
+      span.masked::before { color: #9333ea; } /</em> purple-600 */</p>
+      <p>/* マスク（開） <em>/ .type-senior span.masked.open { color: #9333ea; border-color:
+      #e9d5ff; } /</em> purple-600 / purple-200 <em>/ .type-senior span.masked.open::before { color:
+      #d8b4fe; } /</em> purple-300 */</p>
+      <p>/* blockquote 左ボーダー <em>/ .type-senior blockquote { border-left-color: #d8b4fe; }
+      /</em> purple-300 */</p>
+      <p>/* u（下線） <em>/ .type-senior u { background: linear-gradient(transparent 72%, #e9d5ff
+      28%); } /</em> purple-200 <em>/ .type-senior blockquote u { border-color: #d8b4fe; } /</em>
+      purple-300 */</p>
+      <p>/* リスト記号 <em>/ .type-senior ul li::before { color: #9333ea; } /</em> purple-600 */</p>
+      <p>/* ——- コピーボタン ——- */</p>
+      <p>.copy-btn { position: absolute; top: 0; right: 0; background: transparent; border: none;
+      cursor: pointer; padding: 3px 8px; font-size: 0.85em; color: var(–code-pg-background);
+      opacity: 0.45; transition: opacity 0.2s, color 0.2s; z-index: 1; line-height: 1.6; }</p>
+      <p>.copy-btn:hover { opacity: 1; }</p>
+      <p>div.sourceCode:not([data-caption]) .copy-btn { color: var(–code-pg-foreground); }</p>
+      <p>/* ——- プログラムコードの装飾 ——- */</p>
+      <p>/* キーワード: def, class, return, if, for, while, with, as, lambda, pass, yield… */ code
+      span.kw { color: #0033b3; font-weight: bold; }</p>
+      <p>/* 制御フロー: if, elif, else, for, while, break, continue, return, try, except, finally,
+      raise */ code span.cf { color: #316fa3; font-weight: bold; }</p>
+      <p>/* インポート: import, from */ code span.im { color: #7b36b0; font-weight: bold; }</p>
+      <p>/* 組み込み関数: print, len, range, isinstance, type, enumerate, str, int, float, list,
+      dict, bool… */ code span.bu { color: #0070c1; }</p>
+      <p>/* 関数名 */ code span.fu { color: #795e26; }</p>
+      <p>/* 文字列 */ code span.st { color: #a31515; }</p>
+      <p>/* 特殊文字列 (f-string の外側部分) */ code span.ss { color: #a31515; }</p>
+      <p>/* 特殊文字 (f-string の {} 部分など) */ code span.sc { color: #24292e; font-weight: bold;
+      }</p>
+      <p>/* Verbatim 文字列 */ code span.vs { color: #a31515; }</p>
+      <p>/* 文字リテラル */ code span.ch { color: #a31515; }</p>
+      <p>/* コメント */ code span.co { color: #6a9955; font-style: italic; }</p>
+      <p>/* ドキュメントコメント (docstring) */ code span.do { color: #6a9955; font-style: italic;
+      }</p>
+      <p>/* アノテーション */ code span.an { color: #6a9955; }</p>
+      <p>/* コメント変数 */ code span.cv { color: #6a9955; font-style: italic; }</p>
+      <p>/* 情報トークン */ code span.in { color: #6a9955; }</p>
+      <p>/* 整数 */ code span.dv { color: #098900; }</p>
+      <p>/* 小数 */ code span.fl { color: #098900; }</p>
+      <p>/* 基数表記 (0xFF, 0b1010, 0o77) */ code span.bn { color: #098900; }</p>
+      <p>/* 変数 */ code span.va { color: #001080; }</p>
+      <p>/* 定数 (True, False, None) */ code span.cn { color: #0033b3; }</p>
+      <p>/* データ型 */ code span.dt { color: #267f99; font-weight: bold; }</p>
+      <p>/* 演算子 */ code span.op { color: #383a42; font-weight: bold; }</p>
+      <p>/* 属性 */ code span.at { color: #7b36b0; }</p>
+      <p>/* プリプロセッサ */ code span.pp { color: #7b36b0; }</p>
+      <p>/* 拡張 */ code span.ex { color: #0070c1; }</p>
+      <p>/* エラートークン */ code span.er { color: #cd3131; font-weight: bold; text-decoration:
+      underline; }</p>
+      <p>/* 警告トークン */ code span.wa { color: #af5f00; font-style: italic; }</p>
+      <p>/* アラート */ code span.al { color: #cd3131; font-weight: bold; }</p>
+      <p>/* その他 */ code span.ot { color: #24292e; }</p>
+      <p>/* ——- ナビゲーション ——- */</p>
+      <p>#g-nav { position: fixed; z-index: 999; top: -9999px; left: 0; width: 100%; height: 100vh;
+      background: rgba(0, 0, 0, 0.8); transition: all 0.4s; }</p>
+      <p>#g-nav.panelactive { top: 0; }</p>
+      <p>#g-nav.panelactive #g-nav-list { z-index: 999; width: 100%; height: 100vh; overflow: auto;
+      }</p>
+      <p>#g-nav li a { color: #cccccc; text-decoration: none; padding: 8px; font-weight: bold;
+      display: block; }</p>
+      <p>#g-nav li a:hover { color: white; text-decoration: underline; }</p>
+      <p>#g-nav ul { margin-left: 0; padding-left: 0; }</p>
+      <p>#g-nav li { list-style: none; text-align: center; }</p>
+      <p>#g-nav ul &gt; li { font-size: 24px; }</p>
+      <p>#g-nav ul &gt; li &gt; ul &gt; li { font-size: 16px; }</p>
+      <p>/* ——- ナビゲーションボタン ——- */</p>
+      <p>.openbtn { position: fixed; z-index: 9999; top: 10px; right: 10px; cursor: pointer; width:
+      50px; height: 50px; background: rgba(48, 104, 215, 0.8); border-radius: 5px; }</p>
+      <p>.openbtn span { display: inline-block; transition: all 0.4s; position: absolute; left:
+      14px; height: 2px; border-radius: 5px; background: white; width: 45%; }</p>
+      <p>.openbtn span:nth-of-type(1) { top: 13px; }</p>
+      <p>.openbtn span:nth-of-type(2) { top: 19px; }</p>
+      <p>.openbtn span:nth-of-type(3) { top: 25px; }</p>
+      <p>.openbtn span:nth-of-type(3)::after { content: “Index”; position: absolute; top: 5px; left:
+      -4px; color: #fff; font-size: 0.6rem; text-transform: uppercase; }</p>
+      <p>.openbtn.active span:nth-of-type(1) { top: 14px; left: 18px; transform: translateY(6px)
+      rotate(-45deg); width: 30%; }</p>
+      <p>.openbtn.active span:nth-of-type(2) { opacity: 0; }</p>
+      <p>.openbtn.active span:nth-of-type(3) { top: 26px; left: 18px; transform: translateY(-6px)
+      rotate(45deg); width: 30%; }</p>
+      <p>.openbtn.active span:nth-of-type(3)::after { content: “Close”; transform: translateY(0)
+      rotate(-45deg); top: 5px; left: 4px; }</p>
+      <p>/* ——- 印刷時 ——- */</p>
+      <p><span class="citation" data-cites="media">@media</span> print { #g-nav, .openbtn { display:
+      none; } }</p>
+      <!-- ---------------------------------------- -->
+    </main>
+
+    <footer class="markdown-body">
+      <p><a href="https://takeshiwada1980.github.io/Eii2-2026/">講義資料のIndexに移動</a></p>
+    </footer>
+
+    <script>
+      window.onload = function () {
+        // ナビゲーション関連
+        let openBtn = document.getElementsByClassName("openbtn")[0];
+        let navPnl = document.getElementById("g-nav");
+        openBtn.onclick = () => {
+          openBtn.classList.toggle("active");
+          navPnl.classList.toggle("panelactive");
+        };
+
+        let items = navPnl.getElementsByTagName("a");
+        Array.from(items).forEach((item) => {
+          item.onclick = () => {
+            openBtn.classList.toggle("active");
+            navPnl.classList.toggle("panelactive");
+          };
+        });
+
+        // マスク処理
+        let maskedSpans = document.getElementsByClassName("masked");
+        Array.from(maskedSpans).forEach((span) => {
+          span.onclick = () => {
+            span.classList.toggle("open");
+          };
+        });
+
+        // 吹き出しコンポーネントの補完
+        function updateBalloonFrame(body) {
+          var svg = body.querySelector(":scope > .balloon-frame");
+          var path = body.querySelector(":scope > .balloon-frame .balloon-frame-shape");
+          if (!svg || !path) return;
+
+          var rect = body.getBoundingClientRect();
+          var style = getComputedStyle(body);
+          var width = Math.max(1, Math.ceil(rect.width));
+          var height = Math.max(1, Math.ceil(rect.height));
+
+          var stroke = parseFloat(style.getPropertyValue("--balloon-stroke-width")) || 2;
+          var radius = parseFloat(style.getPropertyValue("--balloon-radius")) || 18;
+          var tailWidth = parseFloat(style.getPropertyValue("--balloon-tail-width")) || 26;
+          var tailTop = parseFloat(style.getPropertyValue("--balloon-tail-top")) || 18;
+          var tailBase = parseFloat(style.getPropertyValue("--balloon-tail-base")) || 20;
+          var tailTipInset =
+            parseFloat(style.getPropertyValue("--balloon-tail-tip-inset")) || 3;
+          var s2 = stroke * 0.5;
+          var left = tailWidth + s2;
+          var top = s2;
+          var right = width - s2;
+          var bottom = height - s2;
+          var safeRadius = Math.min(radius, (right - left) * 0.5, (bottom - top) * 0.5);
+          var baseTop = Math.max(
+            top + safeRadius + 4,
+            Math.min(bottom - safeRadius - tailBase - 4, tailTop),
+          );
+          var baseBottom = Math.min(bottom - safeRadius - 4, baseTop + tailBase);
+          var tipX = Math.max(s2, tailTipInset);
+          var tipY = (baseTop + baseBottom) * 0.5;
+          var d = [
+            "M",
+            left + safeRadius,
+            top,
+            "H",
+            right - safeRadius,
+            "A",
+            safeRadius,
+            safeRadius,
+            0,
+            0,
+            1,
+            right,
+            top + safeRadius,
+            "V",
+            bottom - safeRadius,
+            "A",
+            safeRadius,
+            safeRadius,
+            0,
+            0,
+            1,
+            right - safeRadius,
+            bottom,
+            "H",
+            left + safeRadius,
+            "A",
+            safeRadius,
+            safeRadius,
+            0,
+            0,
+            1,
+            left,
+            bottom - safeRadius,
+            "V",
+            baseBottom,
+            "L",
+            tipX,
+            tipY,
+            "L",
+            left,
+            baseTop,
+            "V",
+            top + safeRadius,
+            "A",
+            safeRadius,
+            safeRadius,
+            0,
+            0,
+            1,
+            left + safeRadius,
+            top,
+            "Z",
+          ].join(" ");
+
+          svg.setAttribute("viewBox", "0 0 " + width + " " + height);
+          path.setAttribute("d", d);
+        }
+
+        document.querySelectorAll("div.balloon").forEach(function (div) {
+          if (div.querySelector(":scope > .balloon-body")) return;
+
+          var hasContent = Array.from(div.childNodes).some(function (node) {
+            return node.nodeType !== Node.TEXT_NODE || node.textContent.trim() !== "";
+          });
+          if (!hasContent) return;
+
+          var classNames = Array.from(div.classList);
+          var charClass = classNames.find(function (name) {
+            return /^char-\d\d/.test(name) && name.length === 7;
+          });
+          var faceClass = classNames.find(function (name) {
+            return /^face-\d\d/.test(name) && name.length === 7;
+          });
+
+          var contentNodes = Array.from(div.childNodes);
+          var body = document.createElement("div");
+          body.className = "balloon-body";
+
+          var frame = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "svg",
+          );
+          frame.setAttribute("aria-hidden", "true");
+          frame.classList.add("balloon-frame");
+
+          var framePath = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path",
+          );
+          framePath.classList.add("balloon-frame-shape");
+          frame.appendChild(framePath);
+
+          var bubble = document.createElement("div");
+          bubble.className = "balloon-bubble";
+
+          var content = document.createElement("div");
+          content.className = "balloon-content";
+          contentNodes.forEach(function (node) {
+            content.appendChild(node);
+          });
+
+          bubble.appendChild(content);
+          body.appendChild(frame);
+          body.appendChild(bubble);
+
+          if (charClass && faceClass) {
+            var figure = document.createElement("div");
+            figure.className = "balloon-figure";
+
+            var avatar = document.createElement("div");
+            avatar.className = "balloon-avatar";
+
+            var image = document.createElement("img");
+            var avatarBasePath = "figs/balloon/" + charClass + "/" + faceClass;
+            var triedGifAvatar = false;
+            image.src = avatarBasePath + ".png";
+            image.alt = "";
+            image.loading = "lazy";
+            image.decoding = "async";
+            image.addEventListener("error", function () {
+              if (!triedGifAvatar) {
+                triedGifAvatar = true;
+                image.src = avatarBasePath + ".gif";
+                return;
+              }
+
+              div.classList.add("balloon-no-avatar");
+              if (figure.parentNode) {
+                figure.remove();
+              }
+            });
+
+            avatar.appendChild(image);
+            figure.appendChild(avatar);
+            div.appendChild(figure);
+          } else {
+            div.classList.add("balloon-no-avatar");
+          }
+
+          div.appendChild(body);
+          updateBalloonFrame(body);
+
+          if (window.ResizeObserver) {
+            var observer = new ResizeObserver(function () {
+              updateBalloonFrame(body);
+            });
+            observer.observe(body);
+          }
+        });
+
+        // data-startfrom 属性の行番号カウンタのリセット
+        document.querySelectorAll("div.sourceCode").forEach(function (div) {
+          var startFrom = div.getAttribute("data-startfrom");
+          if (startFrom != null) {
+            div.style.counterReset = "pg-line " + (startFrom - 1);
+          }
+        });
+
+        // コピーボタンの追加
+        document.querySelectorAll("div.sourceCode").forEach(function (div) {
+          var btn = document.createElement("button");
+          btn.className = "copy-btn";
+          btn.title = "コードをコピー";
+          btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+          btn.addEventListener("click", function () {
+            var codeEl = div.querySelector("code");
+            if (!codeEl) return;
+            navigator.clipboard.writeText(codeEl.innerText).then(function () {
+              btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+              setTimeout(function () {
+                btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+              }, 1500);
+            });
+          });
+          div.appendChild(btn);
+        });
+
+      };
+    </script>
+  </body>
+</html>
