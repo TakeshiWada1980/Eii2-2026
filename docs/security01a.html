@@ -1439,6 +1439,10 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       Cookie が、自分の見ている画面に出力されるだけで、特に実害はありません。</p>
       <h3 data-number="7.2.5" id="例5"><span class="header-section-number">7.2.5</span> 例5
       💀💀💀</h3>
+      <div class="note type-tips">
+      <p>FireFox では、以下の処理がブロックされることがあるようです。再現・検証のためには Chrome
+      を使用してください。</p>
+      </div>
       <p>次のクエリパラメータには <code>document.cookie</code> で取得した Cookie を
       <code>http://localhost:3000/api/xss</code> 宛に送信して、その後、<code>/</code>
       に移動するような JavaScript プログラムが設定されています。</p>
@@ -2196,7 +2200,8 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <h3 data-number="9.6.1" id="dompurify-によるサニタイズaboutview-コンポーネントを使う"><span
       class="header-section-number">9.6.1</span> 1. DOMPurify によるサニタイズ（AboutView
       コンポーネントを使う）</h3>
-      <p><code>/about/[slug]/page.tsx</code> を以下のように変更してください。</p>
+      <p><code>/about/[slug]/page.tsx</code>
+      のプロフィール表示関連の処理を、以下を参考に書き換えてください。</p>
       <div class="sourceCode" id="cb63" data-caption="src/app/about/[slug]/page.tsx（修正案 A）"
       data-startFrom="1"><pre class="sourceCode numberSource tsx numberLines"><code class="sourceCode"><span id="cb63-1"><a href="#cb63-1"></a>import { AboutView } from &quot;@/app/_components/AboutView&quot;;</span>
 <span id="cb63-2"><a href="#cb63-2"></a></span>

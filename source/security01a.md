@@ -1064,6 +1064,10 @@ http://localhost:3000/news?name=<img src=x onerror="document.write('(ToT) => ',d
 
 #### 例5 💀💀💀
 
+:::{.note .type-tips}
+FireFox では、以下の処理がブロックされることがあるようです。再現・検証のためには Chrome を使用してください。
+:::
+
 次のクエリパラメータには `document.cookie` で取得した Cookie を `http://localhost:3000/api/xss` 宛に送信して、その後、`/` に移動するような JavaScript プログラムが設定されています。
 
 ```txt{caption="💀💀💀 XSS脆弱性を利用してCookieを取得して送信"}
@@ -1694,7 +1698,7 @@ const sanitizedContent = DOMPurify.sanitize(about.aboutContent, {
 
 #### 1. DOMPurify によるサニタイズ（AboutView コンポーネントを使う）
 
-`/about/[slug]/page.tsx` を以下のように変更してください。
+`/about/[slug]/page.tsx` のプロフィール表示関連の処理を、以下を参考に書き換えてください。
 
 ```tsx{.numberLines caption="src/app/about/[slug]/page.tsx（修正案 A）" startFrom=1}
 import { AboutView } from "@/app/_components/AboutView";
