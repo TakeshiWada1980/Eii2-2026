@@ -791,8 +791,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <p>このように Cookie🍪 は「<strong>サーバがレスポンスで Cookie
       を発行する</strong>」👉「クライアントがその後のリクエストに自動的にCookieを含める」という仕組みで、本来はステートレスなHTTPプロトコルにおいて「状態管理」や「ユーザ識別」を可能にしています。</p>
       <h3 data-number="4.2.1" id="httpレスポンスの-set-cookie-フィールド"><span
-      class="header-section-number">4.2.1</span> 「HTTPレスポンス」の <code>Set-Cookie</code>
-      フィールド</h3>
+      class="header-section-number">4.2.1</span> 「HTTPレスポンス」の Set-Cookie フィールド</h3>
       <p>サーバからの <strong>HTTPレスポンス</strong> のなかの <code>Set-Cookie</code>
       フィールドは、ブラウザのデベロッパツールの「<strong>ネットワーク</strong>」のツールを使って確認することができます。以下は
       <code>http://localhost:3000/api/cart</code> にアクセスしたときのレスポンスの観測です。</p>
@@ -805,8 +804,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       <code>Expires</code>、<code>Max-Age</code>、<code>SameSite</code> など)
       が付加されていることに着目してください。属性については、後ほど解説します。</p>
       <h3 data-number="4.2.2" id="httpリクエストの-cookie-フィールド"><span
-      class="header-section-number">4.2.2</span> 「HTTPリクエスト」の <code>Cookie</code>
-      フィールド</h3>
+      class="header-section-number">4.2.2</span> 「HTTPリクエスト」の Cookie フィールド</h3>
       <p>同様に <strong>HTTPリクエスト</strong> のなかの <code>Cookie</code>
       フィールドも、以下のように確認することができます。先ほど、<code>Set-Cookie</code> で受け取った
       <code>cart_session_id=947012da-3995-4071-8bfe-c4afaa923756</code>
@@ -852,7 +850,7 @@ git commit --allow-empty -m &quot;Start week-5 branch&quot;</code></pre>
       </blockquote>
       <h3 data-number="4.3.1" id="デベロッパツールからクッキーを確認-httplocalhost3000news"><span
       class="header-section-number">4.3.1</span> デベロッパツールからクッキーを確認
-      (<code>http://localhost:3000/news</code>)</h3>
+      (http://localhost:3000/news)</h3>
       <p>ブラウザのデベロッパツール (<code>F12</code>で起動) から、ブラウザ内部に保存されている
       Cookie の内容を確認することができます。</p>
       <figure>
