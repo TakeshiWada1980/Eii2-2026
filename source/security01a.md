@@ -31,7 +31,7 @@ var:
 
 ### 演習 <i class="fa-solid fa-stopwatch"></i>30分
 
-[リポジトリ](https://github.com/TakeshiWada1980/web-sec-playground-2)をクローンして `README.md` に示す手順でプロジェクトをセットアップしてください。
+[リポジトリ](https://github.com/TakeshiWada1980/web-sec-playground-2) をクローンして `README.md` に示す手順でプロジェクトをセットアップしてください。
 
 - クローンは [PG1で学習済み](https://takeshiwada1980.github.io/Programming1-2025/lecture27.html#リポジトリのクローン) です。手順は [README.md](https://github.com/TakeshiWada1980/web-sec-playground-2#) にも記載されています。
 
