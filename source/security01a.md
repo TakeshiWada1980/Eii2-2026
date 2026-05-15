@@ -27,7 +27,7 @@ var:
 - Next.js Server Actions (Custom Invocation)
 
 
-昨年度の[プログラミング3](https://takeshiwada1980.github.io/Programming3-2025/)では[Supabase](https://supabase.com/)が提供する「**ユーザ認証機能**」を利用してウェブアプリを開発しましたが、ここではセキュリティ (認証・認可) に対する理解を深めるために <span class="masked">ゼロからユーザ認証機能を実装</span> していきます。
+昨年度の [プログラミング3](https://takeshiwada1980.github.io/Programming3-2025/) では [Supabase](https://supabase.com/) が提供する「**ユーザ認証機能**」を利用してウェブアプリを開発しましたが、ここではセキュリティ (認証・認可) に対する理解を深めるために <span class="masked">ゼロからユーザ認証機能を実装</span> していきます。
 
 ### 演習 <i class="fa-solid fa-stopwatch"></i>30分
 
